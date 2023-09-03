@@ -2,14 +2,13 @@ import DashboardLoadingCom from "@/components/home/LoadingScreen";
 import { Provider as AppBridgeProvider } from "@shopify/app-bridge-react";
 import { Suspense } from "react";
 import DashBoardPage from "@/components/home/Index";
-import enTranslations from "@shopify/polaris/locales/en.json";
 import { AppProvider } from "@shopify/polaris";
 import AppQueryClientProvider from "@/contexts/react-query.context";
 
 function DashboardPage() {
   if (typeof window === "undefined") {
     return (
-      <AppProvider i18n={enTranslations}>
+      <AppProvider i18n={{}}>
         <DashboardLoadingCom />
       </AppProvider>
     );
@@ -24,7 +23,7 @@ function DashboardPage() {
           apiKey: process.env.NEXT_PUBLIC_SHOPIFY_API_KEY!,
         }}
       >
-        <AppProvider i18n={enTranslations}>
+        <AppProvider i18n={{}}>
           <Suspense fallback={<DashboardLoadingCom />}>
             <DashBoardPage />
           </Suspense>
