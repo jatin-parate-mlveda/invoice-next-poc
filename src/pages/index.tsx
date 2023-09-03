@@ -10,4 +10,4 @@ export default function DashboardPage() {
   );
 }
 
-// DashboardPage.LoadingScreen = DashboardLoadingCom;
+DashboardPage.getLoadingScreen = () => <DashboardLoadingCom />;

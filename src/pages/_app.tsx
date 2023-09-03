@@ -7,8 +7,9 @@ import AppQueryClientProvider from '@/contexts/react-query.context';
 
 export default function App({ Component, pageProps }: AppProps) {
   if (typeof window === 'undefined') {
-    const { LoadingScreen } = Component as any;
-    if (LoadingScreen) {
+    const { getLoadingScreen } = Component as any;
+    if (getLoadingScreen) {
+      const LoadingScreen = getLoadingScreen();
       return (
         <AppProvider i18n={enTranslations}>
           <LoadingScreen />
