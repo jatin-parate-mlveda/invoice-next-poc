@@ -8,8 +8,7 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
-      <Script id='crisp'>
-        {`
+      <Script id='crisp' strategy='afterInteractive' type='text/javascript' dangerouslySetInnerHTML={{ __html: `
   window.$crisp = [];
   window.CRISP_WEBSITE_ID = '9a70b14e-b8db-48b2-8773-95eb66b91cee';
   (function IIF() {
@@ -22,8 +21,7 @@ export default function Document() {
     window.$crisp.push(['set', 'session:segments', [['invoicehero']]]);
     window.$crisp.push(['set', 'session:data', ['storename', window.shopName]]);
   })();
-        `}
-      </Script>
+      `}} />
       </body>
     </Html>
   );
