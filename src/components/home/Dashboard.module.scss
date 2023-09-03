@@ -1,0 +1,24 @@
+.isOrderCancelled {
+  text-decoration: line-through;
+  color: var(--p-color-text-subdued);
+}
+.tableColumnTextAlignedRight {
+  text-align: right;
+}
+
+.invoiceCancelledViewBtn span {
+  text-decoration: line-through !important;
+}
+.polarisIndexTableContainer :global(.Polaris-IndexTable) {
+  overflow-x: hidden !important;
+}
+
+.polarisIndexTableContainer
+  td:not(.polarisIndexTableContainer td:nth-child(1)) {
+  padding: var(--p-space-2) var(--p-space-2);
+}
+.container {
+  :global(.Polaris-Tabs__Outer > div) {
+    border-bottom: none;
+  }
+}
