@@ -1,6 +1,6 @@
-import { useAppBridge } from "@shopify/app-bridge-react";
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useAppBridge } from '@shopify/app-bridge-react';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import {
   fetchSettings,
   fetchAllPlans,
@@ -14,24 +14,24 @@ import {
   fetchTemplateData,
   fetchInvoices,
   fetchTotalOrders,
-} from "./api.service";
+} from './api.service';
 
-export const useSettingsQueryTags = ["settings"];
-export const useShopDataQueryTags = ["shopData"];
-export const useAllPlansQueryTags = ["allPlans"];
-export const useGlobalPlansQueryTags = ["globalPlans"];
-export const useEmailSettingsQueryTags = ["email-settings"];
-export const useLanguageQueryTags = ["languageData"];
-export const useDefaultStringDataQueryTags = ["default"];
-export const useFontFamiliesQueryTags = ["fontFamilies"];
-export const useTemplateDataQueryTags = ["template"];
-export const useInvoicesQueryTags = ["invoices"];
-export const useTotalOrdersCountQueryTags = ["total-orders"];
+export const useSettingsQueryTags = ['settings'];
+export const useShopDataQueryTags = ['shopData'];
+export const useAllPlansQueryTags = ['allPlans'];
+export const useGlobalPlansQueryTags = ['globalPlans'];
+export const useEmailSettingsQueryTags = ['email-settings'];
+export const useLanguageQueryTags = ['languageData'];
+export const useDefaultStringDataQueryTags = ['default'];
+export const useFontFamiliesQueryTags = ['fontFamilies'];
+export const useTemplateDataQueryTags = ['template'];
+export const useInvoicesQueryTags = ['invoices'];
+export const useTotalOrdersCountQueryTags = ['total-orders'];
 
 export const useSettingsQuery = (
   options?: Omit<
     UseQueryOptions<any, any, any, string[]>,
-    "queryKey" | "queryFn"
+    'queryKey' | 'queryFn'
   >,
 ) => {
   const appInstance = useAppBridge();
@@ -109,7 +109,7 @@ export const useSelectedLanguageStringDataQuery = (
   return queryResult;
 };
 // use: pricing customPricing
-const useCustomPricingPlansQueryTags = ["customPricingPlans"];
+const useCustomPricingPlansQueryTags = ['customPricingPlans'];
 
 export const useCustomPricingPlansQuery = () => {
   const appInstance = useAppBridge();
@@ -128,7 +128,7 @@ export const useCustomPricingPlansQuery = () => {
 export const useTotalOrdersQuery = (
   options?: Omit<
     UseQueryOptions<any, any, any, string[]>,
-    "queryKey" | "queryFn"
+    'queryKey' | 'queryFn'
   >,
 ) => {
   const appInstance = useAppBridge();
@@ -141,7 +141,7 @@ export const useTotalOrdersQuery = (
 
 export const useInvoicesDataQuery = (
   parameters: any,
-  options?: Omit<UseQueryOptions<any, any, any, any[]>, "queryKey" | "queryFn">,
+  options?: Omit<UseQueryOptions<any, any, any, any[]>, 'queryKey' | 'queryFn'>,
 ) => {
   const appInstance = useAppBridge();
   const par = Object.values(parameters);

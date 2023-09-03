@@ -1,10 +1,10 @@
-import { Modal } from "@shopify/app-bridge-react";
+import { Modal } from '@shopify/app-bridge-react';
 import {
   forwardRef,
   useImperativeHandle,
   useState,
   type ForwardRefRenderFunction,
-} from "react";
+} from 'react';
 
 export type ResendInvoiceModalRefType = {
   openModal: (temp: any) => void;
@@ -41,18 +41,18 @@ const ResendInvoiceModal: ForwardRefRenderFunction<
     <Modal
       message={
         invoice && invoice.isOrderCancelled
-          ? "This order is cancelled. Do you still want to re-send email?"
-          : "Do you want to resend this invoice?"
+          ? 'This order is cancelled. Do you still want to re-send email?'
+          : 'Do you want to resend this invoice?'
       }
       open={isOpen}
       onClose={closeModal}
       primaryAction={{
-        content: "Yes",
+        content: 'Yes',
         onAction: onYesClick,
       }}
       secondaryActions={[
         {
-          content: "No",
+          content: 'No',
           onAction: closeModal,
         },
       ]}

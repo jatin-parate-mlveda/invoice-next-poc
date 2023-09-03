@@ -33,10 +33,10 @@ export type GlobalPlan = {
 };
 
 export type LanguageData = {
-  _id: "5ef9b8e6a51e81506d9b36d3";
-  direction: "ltr";
-  code: "bn";
-  name: "Bengali";
+  _id: '5ef9b8e6a51e81506d9b36d3';
+  direction: 'ltr';
+  code: 'bn';
+  name: 'Bengali';
   popularity: 1;
   __v: 0;
 };

@@ -8,12 +8,12 @@ import {
   IndexFilters,
   IndexFiltersMode,
   useSetIndexFiltersMode,
-} from "@shopify/polaris";
+} from '@shopify/polaris';
 
 function DashboardLoadingCom() {
   const { mode, setMode } = useSetIndexFiltersMode(IndexFiltersMode.Default);
   const rowMarkup = [
-    <IndexTable.Row position={0} id="" key="1">
+    <IndexTable.Row position={0} id='' key='1'>
       <IndexTable.Cell>
         <SkeletonBodyText lines={1} />
       </IndexTable.Cell>
@@ -44,8 +44,8 @@ function DashboardLoadingCom() {
     </IndexTable.Row>,
   ];
   return (
-    <Page title="Dashboard">
-      <div style={{ maxWidth: "100%", marginBottom: "2rem" }}>
+    <Page title='Dashboard'>
+      <div style={{ maxWidth: '100%', marginBottom: '2rem' }}>
         <LegacyCard>
           <IndexFilters
             filters={[]}
@@ -64,15 +64,15 @@ function DashboardLoadingCom() {
           />
           <IndexTable
             headings={[
-              { title: "Invoice" },
-              { title: "Order" },
-              { title: "Date" },
-              { title: "Name" },
-              { title: "Total", alignment: "end" },
-              { title: "Payment" },
-              { title: "Fulfillment" },
-              { title: "Status" },
-              { title: "" },
+              { title: 'Invoice' },
+              { title: 'Order' },
+              { title: 'Date' },
+              { title: 'Name' },
+              { title: 'Total', alignment: 'end' },
+              { title: 'Payment' },
+              { title: 'Fulfillment' },
+              { title: 'Status' },
+              { title: '' },
             ]}
             itemCount={25}
           >
@@ -89,7 +89,7 @@ function DashboardLoadingCom() {
           </IndexTable>
         </LegacyCard>
       </div>
-      <Banner status="info">
+      <Banner status='info'>
         Now you can view/download your invoices from your orders page itself.
         Select particular orders (50 max) or open a particular order and choose
         Invoice Hero features from More actions drop down.

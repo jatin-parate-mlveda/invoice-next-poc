@@ -1,9 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
-  const searchParams = new URL("https://localhost" + req.url!).searchParams;
-  const shopName = req.query["shop"] as string;
+  const searchParams = new URL('https://localhost' + req.url!).searchParams;
+  const shopName = req.query['shop'] as string;
 
   const apiRes = await fetch(
     `${process.env.API_ENDPOINT}api/shop/app-exists?shop=${shopName}`,
@@ -26,7 +26,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 
   if (
     !isOldIhUser &&
-    !req.url!.startsWith("/admin-links") &&
+    !req.url!.startsWith('/admin-links') &&
     !isSetupCompleted
   ) {
     res.redirect(`/welcome?${searchParams.toString()}`);

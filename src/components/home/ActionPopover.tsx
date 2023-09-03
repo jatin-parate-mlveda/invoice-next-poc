@@ -1,15 +1,15 @@
-import { ActionList, Button, Popover } from "@shopify/polaris";
-import { useRef } from "react";
-import StringConstants from "../../utils/stringConstants";
+import { ActionList, Button, Popover } from '@shopify/polaris';
+import { useRef } from 'react';
+import StringConstants from '../../utils/stringConstants';
 import ResendInvoiceModal, {
   ResendInvoiceModalRefType,
-} from "./ResendInvoiceModal";
-import SendInvoiceModal, { SendInvoiceModalRefType } from "./SendInvoiceModal";
+} from './ResendInvoiceModal';
+import SendInvoiceModal, { SendInvoiceModalRefType } from './SendInvoiceModal';
 import {
   useGeneratePDFAndSendEmailMutation,
   usePDFDataUploadMutation,
   useSendEmailMutation,
-} from "@/services/mutations.service";
+} from '@/services/mutations.service';
 
 const ActionPopover: React.FC<{
   toggle: any;
@@ -45,13 +45,13 @@ const ActionPopover: React.FC<{
     if (tempInvoice.isPDFCreated) {
       uploadSendEmailMutation.mutate(reqData, {
         onSuccess: (data: any) => {
-          if (data.status === "Sent") setSuccessToastVisible(true);
+          if (data.status === 'Sent') setSuccessToastVisible(true);
           else if (data.message)
             setErrToast({ visible: true, message: data.message });
           else
             setErrToast({
               visible: true,
-              message: StringConstants["toast.error.email"],
+              message: StringConstants['toast.error.email'],
             });
           const tempInvoiceList = Object.assign([], orderData);
           const updatedItem = tempInvoiceList.find(
@@ -67,20 +67,20 @@ const ActionPopover: React.FC<{
           }
         },
         onError: () => {
-          setErrToast({ visible: true, message: "Something went wrong" });
+          setErrToast({ visible: true, message: 'Something went wrong' });
         },
       });
     } else {
       uploadGeneratePDFAndSendEmailMutation.mutate(reqData, {
         onSuccess: (data: any) => {
-          if (data.status === "Sent") {
+          if (data.status === 'Sent') {
             setSuccessToastVisible(true);
           } else if (data.message)
             setErrToast({ visible: true, message: data.message });
           else {
             setErrToast({
               visible: true,
-              message: StringConstants["toast.error.email"],
+              message: StringConstants['toast.error.email'],
             });
           }
           const tempInvoiceList = Object.assign([], orderData);
@@ -97,7 +97,7 @@ const ActionPopover: React.FC<{
           }
         },
         onError: () => {
-          setErrToast({ visible: true, message: "Something went wrong" });
+          setErrToast({ visible: true, message: 'Something went wrong' });
         },
       });
     }
@@ -124,10 +124,10 @@ const ActionPopover: React.FC<{
               setOrderData(tempInvoiceList);
             }
           }
-          window.open(data.link, "_blank");
+          window.open(data.link, '_blank');
         },
         onError: () => {
-          setErrToast({ visible: true, message: "Something went wrong" });
+          setErrToast({ visible: true, message: 'Something went wrong' });
         },
       },
     );
@@ -135,8 +135,8 @@ const ActionPopover: React.FC<{
   const openPDF = () => {
     if (invoice.isPDFCreated) {
       const invoiceLink = new URL(invoice.invoiceLink);
-      invoiceLink.searchParams.append("timestamp", Date.now().toString());
-      window.open(invoiceLink.toString(), "_blank");
+      invoiceLink.searchParams.append('timestamp', Date.now().toString());
+      window.open(invoiceLink.toString(), '_blank');
     } else {
       const reqData = {
         orderId: invoice.orderId,
@@ -155,10 +155,10 @@ const ActionPopover: React.FC<{
             }
           }
 
-          window.open(data.link, "_blank");
+          window.open(data.link, '_blank');
         },
         onError: () => {
-          setErrToast({ visible: true, message: "Something went wrong" });
+          setErrToast({ visible: true, message: 'Something went wrong' });
         },
       });
     }
@@ -171,10 +171,10 @@ const ActionPopover: React.FC<{
         onClose={toggle}
         activator={
           <div
-            className="dashboardPage__actionsBtn"
-            role="none"
+            className='dashboardPage__actionsBtn'
+            role='none'
             onKeyDown={undefined}
-            onClick={(event) => {
+            onClick={event => {
               event.stopPropagation();
             }}
           >
@@ -194,17 +194,17 @@ const ActionPopover: React.FC<{
         }
       >
         <div
-          className="dashboardPage__actionsBtn"
-          role="none"
+          className='dashboardPage__actionsBtn'
+          role='none'
           onKeyDown={undefined}
-          onClick={(event) => {
+          onClick={event => {
             event.stopPropagation();
           }}
         >
           <ActionList
             items={[
               {
-                content: StringConstants["dashboard.actions.view"],
+                content: StringConstants['dashboard.actions.view'],
                 onAction: () => {
                   openPDF();
                   const order = orderData.find(
@@ -218,11 +218,11 @@ const ActionPopover: React.FC<{
               },
               {
                 content:
-                  invoice.status === "Sent"
-                    ? StringConstants["dashboard.actions.resend"]
-                    : StringConstants["dashboard.actions.send"],
+                  invoice.status === 'Sent'
+                    ? StringConstants['dashboard.actions.resend']
+                    : StringConstants['dashboard.actions.send'],
                 onAction: () => {
-                  if (invoice.status === "Sent") {
+                  if (invoice.status === 'Sent') {
                     resendInvoiceModal.current?.openModal(invoice);
                   } else sendInvoiceModal.current?.openModal(invoice);
                   const order = orderData.find(
@@ -235,7 +235,7 @@ const ActionPopover: React.FC<{
                 disabled: isFetching,
               },
               {
-                content: "Regenerate",
+                content: 'Regenerate',
                 onAction: () => regenerateInvoice(),
                 disabled: isFetching,
               },
@@ -245,12 +245,12 @@ const ActionPopover: React.FC<{
       </Popover>
       <SendInvoiceModal
         sendMail={sendMail}
-        key="sendInvoiceModal"
+        key='sendInvoiceModal'
         ref={sendInvoiceModal}
       />
       <ResendInvoiceModal
         sendMail={sendMail}
-        key="resendInvoiceModal"
+        key='resendInvoiceModal'
         ref={resendInvoiceModal}
       />
     </div>

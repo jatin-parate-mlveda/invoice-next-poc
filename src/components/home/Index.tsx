@@ -15,39 +15,39 @@ import {
   Divider,
   Select,
   EmptySearchResult,
-} from "@shopify/polaris";
-import type { IndexFiltersProps } from "@shopify/polaris";
-import { HintMajor } from "@shopify/polaris-icons";
-import { useState, useCallback, useEffect, useMemo } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { Toast } from "@shopify/app-bridge-react";
-import moment from "moment";
-import { useDebounce } from "usehooks-ts";
+} from '@shopify/polaris';
+import type { IndexFiltersProps } from '@shopify/polaris';
+import { HintMajor } from '@shopify/polaris-icons';
+import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { Toast } from '@shopify/app-bridge-react';
+import moment from 'moment';
+import { useDebounce } from 'usehooks-ts';
 import {
   fulfillmentFilters,
   mailFilterOptions,
   orderStatusFilterOptions,
   paymentFilters,
-} from "@/utils/constant";
+} from '@/utils/constant';
 import {
   useInvoicesDataQuery,
   useInvoicesQueryTags,
   useTotalOrdersQuery,
-} from "@/services/queries.service";
+} from '@/services/queries.service';
 import {
   useMergedPDFsToOwnerMutation,
   useSendPDFsToCustomersMutation,
   useSendPDFsToOwnerMutation,
   useUpdateDashboardOpenedOnceUpdateMutation,
-} from "@/services/mutations.service";
-import ActionPopover from "./ActionPopover";
+} from '@/services/mutations.service';
+import ActionPopover from './ActionPopover';
 
-import ContextualSaveBarActionResultModal from "./ContextualSaveBarActionResultModal";
-import NoOrdersPage from "./NoOrdersPage";
-import DateRangePicker from "./DatePicker";
-import styles from "./Dashboard.module.scss";
-import ViewInvoiceButton from "./ViewInvoiceButton";
-import { useRouter } from "next/router";
+import ContextualSaveBarActionResultModal from './ContextualSaveBarActionResultModal';
+import NoOrdersPage from './NoOrdersPage';
+import DateRangePicker from './DatePicker';
+import styles from './Dashboard.module.scss';
+import ViewInvoiceButton from './ViewInvoiceButton';
+import { useRouter } from 'next/router';
 
 function DashBoardPage() {
   const [errToast, setErrToast] = useState<{
@@ -55,9 +55,9 @@ function DashBoardPage() {
     message: string;
   }>({
     visible: false,
-    message: "Something went wrong",
+    message: 'Something went wrong',
   });
-  const dateFilterFormat = "D MMM YYYY";
+  const dateFilterFormat = 'D MMM YYYY';
   // const windowWidth = useRef(window.innerWidth);
   const [successToastVisible, setSuccessToastVisible] =
     useState<boolean>(false);
@@ -65,20 +65,20 @@ function DashBoardPage() {
   const { totalInvoices } = useTotalOrdersQuery().data;
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [sort, setSort] = useState({
-    column: "invoiceDate",
-    direction: "desc",
+    column: 'invoiceDate',
+    direction: 'desc',
   });
   const sendMergedPDFsToOwnerMutation = useMergedPDFsToOwnerMutation();
   const sendPDFsToCustomersMutation = useSendPDFsToCustomersMutation();
   const sendPDFsToOwnerMutation = useSendPDFsToOwnerMutation();
-  const [queryValue, setQueryValue] = useState<string>("");
+  const [queryValue, setQueryValue] = useState<string>('');
   const debouncedQueryValue = useDebounce<string>(queryValue, 500);
   const [totalEntryOnPage, setTotalEntryOnPage] = useState<number>(25);
   const [params, setParams] = useState({
     direction: sort.direction,
     column: sort.column,
     currentPage: 1,
-    searchText: queryValue!.trim().replace(/[\\^$.*+?()[\]{}|]/g, "\\$&"),
+    searchText: queryValue!.trim().replace(/[\\^$.*+?()[\]{}|]/g, '\\$&'),
     limit: totalEntryOnPage,
   });
   const router = useRouter();
@@ -97,71 +97,71 @@ function DashBoardPage() {
     setIsContextualSaveBarActionResultModalActive(false);
   };
   const redirectContextualSaveBarActionResultModal = () => {
-    router.push("/pricing");
+    router.push('/pricing');
   };
   const [sortDirection, setSortDirection] = useState<
-    "ascending" | "descending"
-  >("ascending");
+    'ascending' | 'descending'
+  >('ascending');
   const [
     contextualSaveBarActionResultModalContent,
     setContextualSaveBarActionResultModalContent,
   ] = useState({
     isMergePdfAction: false,
-    status: "",
-    message: "",
+    status: '',
+    message: '',
   });
-  const sortOptions: IndexFiltersProps["sortOptions"] = [
-    { label: "Invoice", value: "orderNo asc", directionLabel: "Ascending" },
-    { label: "Invoice", value: "orderNo desc", directionLabel: "Descending" },
+  const sortOptions: IndexFiltersProps['sortOptions'] = [
+    { label: 'Invoice', value: 'orderNo asc', directionLabel: 'Ascending' },
+    { label: 'Invoice', value: 'orderNo desc', directionLabel: 'Descending' },
     {
-      label: "Order",
-      value: "shopifyOrderNo asc",
-      directionLabel: "Ascending",
+      label: 'Order',
+      value: 'shopifyOrderNo asc',
+      directionLabel: 'Ascending',
     },
     {
-      label: "Order",
-      value: "shopifyOrderNo desc",
-      directionLabel: "Descending",
+      label: 'Order',
+      value: 'shopifyOrderNo desc',
+      directionLabel: 'Descending',
     },
     {
-      label: "Date",
-      value: "invoiceDate asc",
-      directionLabel: "Oldest to newest",
+      label: 'Date',
+      value: 'invoiceDate asc',
+      directionLabel: 'Oldest to newest',
     },
     {
-      label: "Date",
-      value: "invoiceDate desc",
-      directionLabel: "Newest to oldest",
+      label: 'Date',
+      value: 'invoiceDate desc',
+      directionLabel: 'Newest to oldest',
     },
-    { label: "Customer", value: "customerName asc", directionLabel: "A-Z" },
-    { label: "Customer", value: "customerName desc", directionLabel: "Z-A" },
-    { label: "Total", value: "total asc", directionLabel: "Lowest to highest" },
+    { label: 'Customer', value: 'customerName asc', directionLabel: 'A-Z' },
+    { label: 'Customer', value: 'customerName desc', directionLabel: 'Z-A' },
+    { label: 'Total', value: 'total asc', directionLabel: 'Lowest to highest' },
     {
-      label: "Total",
-      value: "total desc",
-      directionLabel: "Highest to lowest",
+      label: 'Total',
+      value: 'total desc',
+      directionLabel: 'Highest to lowest',
     },
-    { label: "Payment", value: "paymentStatus asc", directionLabel: "A-Z" },
-    { label: "Payment", value: "paymentStatus desc", directionLabel: "Z-A" },
+    { label: 'Payment', value: 'paymentStatus asc', directionLabel: 'A-Z' },
+    { label: 'Payment', value: 'paymentStatus desc', directionLabel: 'Z-A' },
     {
-      label: "Fulfillment",
-      value: "fulfillmentStatus asc",
-      directionLabel: "A-Z",
-    },
-    {
-      label: "Fulfillment",
-      value: "fulfillmentStatus desc",
-      directionLabel: "Z-A",
+      label: 'Fulfillment',
+      value: 'fulfillmentStatus asc',
+      directionLabel: 'A-Z',
     },
     {
-      label: "Status",
-      value: "status asc",
-      directionLabel: "A-Z",
+      label: 'Fulfillment',
+      value: 'fulfillmentStatus desc',
+      directionLabel: 'Z-A',
     },
     {
-      label: "Status",
-      value: "status desc",
-      directionLabel: "Z-A",
+      label: 'Status',
+      value: 'status asc',
+      directionLabel: 'A-Z',
+    },
+    {
+      label: 'Status',
+      value: 'status desc',
+      directionLabel: 'Z-A',
     },
   ];
   const resourceIDResolver = (order: any) => order.orderId;
@@ -192,95 +192,95 @@ function DashBoardPage() {
   }>({
     paymentStatus: [],
     fulfillmentStatus: [],
-    mailStatus: "",
-    orderStatus: "",
+    mailStatus: '',
+    orderStatus: '',
   });
-  const limitOptions = ["25", "50", "75", "100"].map((option) => ({
+  const limitOptions = ['25', '50', '75', '100'].map(option => ({
     label: option,
     value: option,
   }));
   const paymentStatusBadgeStatus = {
     paid: undefined,
-    authorized: "attention",
+    authorized: 'attention',
     partially_refunded: undefined,
     refunded: undefined,
-    partially_paid: "warning",
-    pending: "warning",
-    voided: "critical",
+    partially_paid: 'warning',
+    pending: 'warning',
+    voided: 'critical',
   };
   const paymentStatusProgressStatus = {
-    paid: "complete",
-    authorized: "attention",
-    partially_refunded: "partiallyComplete",
-    refunded: "complete",
-    partially_paid: "partiallyComplete",
-    pending: "incomplete",
-    voided: "complete",
+    paid: 'complete',
+    authorized: 'attention',
+    partially_refunded: 'partiallyComplete',
+    refunded: 'complete',
+    partially_paid: 'partiallyComplete',
+    pending: 'incomplete',
+    voided: 'complete',
   };
 
   const fulfillmentStatusProgressStatus = {
-    unfulfilled: "incomplete",
-    fulfilled: "complete",
-    partial: "partiallyIncomplete",
-    restocked: "partiallyIncomplete",
+    unfulfilled: 'incomplete',
+    fulfilled: 'complete',
+    partial: 'partiallyIncomplete',
+    restocked: 'partiallyIncomplete',
   };
   const fulfillmentStatusBadgeStatus = {
-    unfulfilled: "attention",
-    fulfilled: "info",
-    partial: "warning",
-    restocked: "info",
+    unfulfilled: 'attention',
+    fulfilled: 'info',
+    partial: 'warning',
+    restocked: 'info',
   };
   const monthNames = useMemo(
     () => [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "June",
-      "July",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'June',
+      'July',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ],
     [],
   );
   const columnNames = useMemo(
     () => [
-      "orderNo",
-      "shopifyOrderNo",
-      "invoiceDate",
-      "customerName",
-      "total",
-      "paymentStatus",
-      "fulfillmentStatus",
-      "status",
+      'orderNo',
+      'shopifyOrderNo',
+      'invoiceDate',
+      'customerName',
+      'total',
+      'paymentStatus',
+      'fulfillmentStatus',
+      'status',
     ],
     [],
   );
 
   const onTotalEntryOnPageChange = (value: number) => {
     setTotalEntryOnPage(value);
-    setParams((prev) => ({
+    setParams(prev => ({
       ...prev,
       limit: value,
     }));
   };
   const onSort = (headingIndex: number) => {
-    let tempDirection = "";
+    let tempDirection = '';
     if (sort.column) {
-      tempDirection = sort.direction === "asc" ? "desc" : "asc";
+      tempDirection = sort.direction === 'asc' ? 'desc' : 'asc';
     } else {
-      tempDirection = "desc";
+      tempDirection = 'desc';
     }
     const tempColumn = columnNames[headingIndex];
     setParams({
       direction: tempDirection,
       column: tempColumn,
       currentPage: 1,
-      searchText: queryValue!.trim().replace(/[\\^$.*+?()[\]{}|]/g, "\\$&"),
+      searchText: queryValue!.trim().replace(/[\\^$.*+?()[\]{}|]/g, '\\$&'),
       limit: totalEntryOnPage,
     });
     setSort({ direction: tempDirection, column: tempColumn });
@@ -290,7 +290,7 @@ function DashBoardPage() {
       ...extraQueryParams,
       paymentStatus: value,
     };
-    setParams((prev) => ({
+    setParams(prev => ({
       ...prev,
       ...tempExtraQueryParams,
     }));
@@ -302,7 +302,7 @@ function DashBoardPage() {
       ...extraQueryParams,
       fulfillmentStatus: value,
     };
-    setParams((prev) => ({
+    setParams(prev => ({
       ...prev,
       ...tempExtraQueryParams,
     }));
@@ -314,7 +314,7 @@ function DashBoardPage() {
       ...extraQueryParams,
       mailStatus: value[0],
     };
-    setParams((prev) => ({
+    setParams(prev => ({
       ...prev,
       ...tempExtraQueryParams,
     }));
@@ -329,7 +329,7 @@ function DashBoardPage() {
       ...extraQueryParams,
       startDate: startingDate.toUTCString(),
     };
-    setParams((prev) => ({
+    setParams(prev => ({
       ...prev,
       ...tempExtraQueryParams,
     }));
@@ -343,7 +343,7 @@ function DashBoardPage() {
       ...extraQueryParams,
       endDate: endingDate.toUTCString(),
     };
-    setParams((prev) => ({
+    setParams(prev => ({
       ...prev,
       ...tempExtraQueryParams,
     }));
@@ -353,7 +353,7 @@ function DashBoardPage() {
     sendPDFsToCustomersMutation.mutate(
       {
         ids: Object.values(selectedResources).map(
-          (stringKey) => Number(stringKey),
+          stringKey => Number(stringKey),
           {},
         ),
       },
@@ -373,7 +373,7 @@ function DashBoardPage() {
     sendMergedPDFsToOwnerMutation.mutate(
       {
         ids: Object.values(selectedResources).map(
-          (stringKey) => Number(stringKey),
+          stringKey => Number(stringKey),
           {},
         ),
       },
@@ -393,7 +393,7 @@ function DashBoardPage() {
     sendPDFsToOwnerMutation.mutate(
       {
         ids: Object.values(selectedResources).map(
-          (stringKey) => Number(stringKey),
+          stringKey => Number(stringKey),
           {},
         ),
       },
@@ -411,17 +411,17 @@ function DashBoardPage() {
   };
   const promotedBulkActions = [
     {
-      content: "Send invoices to customers",
+      content: 'Send invoices to customers',
       onAction: () => sendToCustomers(),
     },
     {
-      content: "Send merged invoices to me",
+      content: 'Send merged invoices to me',
       onAction: () => printPDFs(),
     },
   ];
   const bulkActions = [
     {
-      content: "Send individual invoices to me",
+      content: 'Send individual invoices to me',
       onAction: () => sendToMe(),
     },
   ];
@@ -430,7 +430,7 @@ function DashBoardPage() {
       ...extraQueryParams,
       orderStatus: value[0],
     };
-    setParams((prev) => ({
+    setParams(prev => ({
       ...prev,
       ...tempExtraQueryParams,
     }));
@@ -446,11 +446,11 @@ function DashBoardPage() {
   };
   const handlePaymentStatusRemove = () => {
     setPaymentStatus([]);
-    setExtraQueryParams((prev) => ({
+    setExtraQueryParams(prev => ({
       ...prev,
       paymentStatus: [],
     }));
-    setParams((prev) => ({
+    setParams(prev => ({
       ...prev,
       currentPage: 1,
       paymentStatus: [],
@@ -458,62 +458,62 @@ function DashBoardPage() {
   };
   const handleFulfillmentStatusRemove = () => {
     setFulfillmentStatus([]);
-    setExtraQueryParams((prev) => ({
+    setExtraQueryParams(prev => ({
       ...prev,
       fulfillmentStatus: [],
     }));
-    setParams((prev) => ({
+    setParams(prev => ({
       ...prev,
       currentPage: 1,
       fulfillmentStatus: [],
     }));
   };
   const handleMailStatusRemove = () => {
-    setExtraQueryParams((prev) => ({
+    setExtraQueryParams(prev => ({
       ...prev,
-      mailStatus: "",
+      mailStatus: '',
     }));
-    setParams((prev) => ({
+    setParams(prev => ({
       ...prev,
       currentPage: 1,
-      mailStatus: "",
+      mailStatus: '',
     }));
     setMailStatus([]);
   };
   const handleOrderStatusRemove = () => {
-    setExtraQueryParams((prev) => ({
+    setExtraQueryParams(prev => ({
       ...prev,
-      orderStatus: "",
+      orderStatus: '',
     }));
-    setParams((prev) => ({
+    setParams(prev => ({
       ...prev,
       currentPage: 1,
-      orderStatus: "",
+      orderStatus: '',
     }));
     setOrderStatus([]);
   };
   const handleDateRangeRemove = () => {
-    setExtraQueryParams((prev) => ({
+    setExtraQueryParams(prev => ({
       ...prev,
-      startDate: "",
-      endDate: "",
+      startDate: '',
+      endDate: '',
     }));
     setStartDateChanged(false);
     setEndDateChanged(false);
     setSelectedStartDate(new Date());
     setSelectedEndDate(new Date());
-    setParams((prev) => ({
+    setParams(prev => ({
       ...prev,
       currentPage: 1,
-      startDate: "",
-      endDate: "",
+      startDate: '',
+      endDate: '',
     }));
   };
   const handleQueryValueRemove = useCallback(() => {
-    setQueryValue("");
-    setParams((prev) => ({
+    setQueryValue('');
+    setParams(prev => ({
       ...prev,
-      searchText: "",
+      searchText: '',
     }));
   }, []);
   const handleFiltersClearAll = () => {
@@ -540,16 +540,16 @@ function DashBoardPage() {
   };
   const filters = [
     {
-      key: "paymentStatus",
+      key: 'paymentStatus',
       oncancel: () => {
         handlePaymentStatusRemove();
       },
-      label: "Payment status",
+      label: 'Payment status',
       filter: (
         <ChoiceList
-          title="Payment status"
+          title='Payment status'
           titleHidden
-          choices={Object.keys(paymentFilters).map((key) => ({
+          choices={Object.keys(paymentFilters).map(key => ({
             value: key,
             label: paymentFilters[key as keyof typeof paymentFilters],
           }))}
@@ -561,13 +561,13 @@ function DashBoardPage() {
       shortcut: true,
     },
     {
-      key: "fulfillmentStatus",
-      label: "Fulfillment status",
+      key: 'fulfillmentStatus',
+      label: 'Fulfillment status',
       filter: (
         <ChoiceList
-          title="Fulfillment status"
+          title='Fulfillment status'
           titleHidden
-          choices={Object.keys(fulfillmentFilters).map((key) => ({
+          choices={Object.keys(fulfillmentFilters).map(key => ({
             value: key,
             label: fulfillmentFilters[key as keyof typeof fulfillmentFilters],
           }))}
@@ -579,11 +579,11 @@ function DashBoardPage() {
       shortcut: true,
     },
     {
-      key: "mailStatus",
-      label: "Mail status",
+      key: 'mailStatus',
+      label: 'Mail status',
       filter: (
         <ChoiceList
-          title="Mail status"
+          title='Mail status'
           titleHidden
           choices={mailFilterOptions}
           selected={mailStatus || []}
@@ -593,11 +593,11 @@ function DashBoardPage() {
       shortcut: true,
     },
     {
-      key: "orderStatus",
-      label: "Order Status",
+      key: 'orderStatus',
+      label: 'Order Status',
       filter: (
         <ChoiceList
-          title="Order status"
+          title='Order status'
           titleHidden
           choices={orderStatusFilterOptions}
           selected={orderStatus || []}
@@ -606,8 +606,8 @@ function DashBoardPage() {
       ),
     },
     {
-      key: "datePickerRange",
-      label: "Date",
+      key: 'datePickerRange',
+      label: 'Date',
       filter: (
         <DateRangePicker
           startDateChanged={startDateChanged}
@@ -627,31 +627,31 @@ function DashBoardPage() {
 
   const disambiguateLabel = (key: string, value: string | string[]): string => {
     switch (key) {
-      case "paymentStatus":
+      case 'paymentStatus':
         return `Payment: ${(value as string[])
-          .map((val) => capitalizeFirstLetter(val.split("_").join(" ")))
-          .join(", ")}`;
-      case "fulfillmentStatus":
+          .map(val => capitalizeFirstLetter(val.split('_').join(' ')))
+          .join(', ')}`;
+      case 'fulfillmentStatus':
         return `Fulfillment: ${(value as string[])
-          .map((val) => {
-            if (val === "null") return "Unfulfilled";
-            return capitalizeFirstLetter(val.split("_").join(" "));
+          .map(val => {
+            if (val === 'null') return 'Unfulfilled';
+            return capitalizeFirstLetter(val.split('_').join(' '));
           })
-          .join(", ")}`;
-      case "mailStatus":
+          .join(', ')}`;
+      case 'mailStatus':
         return `Mail: ${(value as string[])
-          .map((val) => capitalizeFirstLetter(val.split("_").join(" ")))
-          .join(", ")}`;
-      case "orderStatus":
+          .map(val => capitalizeFirstLetter(val.split('_').join(' ')))
+          .join(', ')}`;
+      case 'orderStatus':
         return `Order: ${(value as string[])
-          .map((val) => capitalizeFirstLetter(val.split("_").join(" ")))
-          .join(", ")}`;
+          .map(val => capitalizeFirstLetter(val.split('_').join(' ')))
+          .join(', ')}`;
       default:
         return value as string;
     }
   };
   const disambiguateLabelForDateRange = (start: any, end: any) => {
-    let label = "Order date: ";
+    let label = 'Order date: ';
     if (start && end) {
       label += `${moment(start).format(dateFilterFormat)} - ${moment(
         end,
@@ -667,12 +667,12 @@ function DashBoardPage() {
     if (Array.isArray(value)) {
       return value.length === 0;
     }
-    return value === "" || value == null;
+    return value === '' || value == null;
   }
 
-  const appliedFilters: IndexFiltersProps["appliedFilters"] = [];
+  const appliedFilters: IndexFiltersProps['appliedFilters'] = [];
   if (paymentStatus && !isEmpty(paymentStatus)) {
-    const key = "paymentStatus";
+    const key = 'paymentStatus';
     appliedFilters.push({
       key,
       label: disambiguateLabel(key, paymentStatus),
@@ -680,7 +680,7 @@ function DashBoardPage() {
     });
   }
   if (fulfillmentStatus && !isEmpty(fulfillmentStatus)) {
-    const key = "fulfillmentStatus";
+    const key = 'fulfillmentStatus';
     appliedFilters.push({
       key,
       label: disambiguateLabel(key, fulfillmentStatus),
@@ -688,7 +688,7 @@ function DashBoardPage() {
     });
   }
   if (mailStatus && !isEmpty(mailStatus)) {
-    const key = "mailStatus";
+    const key = 'mailStatus';
     appliedFilters.push({
       key,
       label: disambiguateLabel(key, mailStatus),
@@ -696,7 +696,7 @@ function DashBoardPage() {
     });
   }
   if (orderStatus && !isEmpty(orderStatus)) {
-    const key = "orderStatus";
+    const key = 'orderStatus';
     appliedFilters.push({
       key,
       label: disambiguateLabel(key, orderStatus),
@@ -704,7 +704,7 @@ function DashBoardPage() {
     });
   }
   if (extraQueryParams.startDate || extraQueryParams.endDate) {
-    const key = "datePickerRange";
+    const key = 'datePickerRange';
     appliedFilters.push({
       key,
       label: disambiguateLabelForDateRange(
@@ -715,8 +715,8 @@ function DashBoardPage() {
     });
   }
   const resourceName = {
-    singular: "order",
-    plural: "orders",
+    singular: 'order',
+    plural: 'orders',
   };
   const rowMarkup = orderData.map((invoice: any, index: number) => (
     <IndexTable.Row
@@ -728,11 +728,11 @@ function DashBoardPage() {
       <IndexTable.Cell>
         <div
           className={
-            invoice.isOrderCancelled ? styles.invoiceCancelledViewBtn : ""
+            invoice.isOrderCancelled ? styles.invoiceCancelledViewBtn : ''
           }
-          role="none"
+          role='none'
           onKeyDown={undefined}
-          onClick={(event) => {
+          onClick={event => {
             event.stopPropagation();
           }}
           // style={{ textDecoration= 'li'  }}
@@ -746,25 +746,25 @@ function DashBoardPage() {
         </div>
       </IndexTable.Cell>
       <IndexTable.Cell
-        className={invoice.isOrderCancelled ? styles.isOrderCancelled : ""}
+        className={invoice.isOrderCancelled ? styles.isOrderCancelled : ''}
       >
         {invoice.shopifyOrderNum !== invoice.orderNum
           ? invoice.shopifyOrderNum
-          : "-"}
+          : '-'}
       </IndexTable.Cell>
       <IndexTable.Cell
-        className={invoice.isOrderCancelled ? styles.isOrderCancelled : ""}
+        className={invoice.isOrderCancelled ? styles.isOrderCancelled : ''}
       >
         {getInvoiceDate(invoice.invoiceDate)}
       </IndexTable.Cell>
       <IndexTable.Cell
-        className={invoice.isOrderCancelled ? styles.isOrderCancelled : ""}
+        className={invoice.isOrderCancelled ? styles.isOrderCancelled : ''}
       >
-        {invoice.customerName || "-"}
+        {invoice.customerName || '-'}
       </IndexTable.Cell>
       <IndexTable.Cell
         className={`${
-          invoice.isOrderCancelled ? styles.isOrderCancelled : ""
+          invoice.isOrderCancelled ? styles.isOrderCancelled : ''
         } ${styles.tableColumnTextAlignedRight}`}
       >
         {invoice.totalAmount}
@@ -782,7 +782,7 @@ function DashBoardPage() {
             ] as any
           }
         >
-          {capitalizeFirstLetter(invoice.paymentStatus.split("_").join(" "))}
+          {capitalizeFirstLetter(invoice.paymentStatus.split('_').join(' '))}
         </Badge>
       </IndexTable.Cell>
       <IndexTable.Cell className={styles.fulfillmentColumn}>
@@ -799,13 +799,13 @@ function DashBoardPage() {
           }
         >
           {capitalizeFirstLetter(
-            invoice.fulfillmentStatus.split("_").join(" "),
+            invoice.fulfillmentStatus.split('_').join(' '),
           )}
         </Badge>
       </IndexTable.Cell>
       <IndexTable.Cell>
-        {invoice.status === "Sent" ? (
-          <Badge status="success">{invoice.status}</Badge>
+        {invoice.status === 'Sent' ? (
+          <Badge status='success'>{invoice.status}</Badge>
         ) : (
           <Badge>{invoice.status}</Badge>
         )}
@@ -842,17 +842,17 @@ function DashBoardPage() {
 
   const onPageChange = (page: number) => {
     setCurrentPage(page);
-    setParams((prev) => ({
+    setParams(prev => ({
       ...prev,
       currentPage: page,
     }));
   };
   useEffect(() => {
-    setParams((prev) => ({
+    setParams(prev => ({
       ...prev,
       searchText: debouncedQueryValue
         .trim()
-        .replace(/[\\^$.*+?()[\]{}|]/g, "\\$&"),
+        .replace(/[\\^$.*+?()[\]{}|]/g, '\\$&'),
     }));
   }, [debouncedQueryValue]);
 
@@ -870,7 +870,7 @@ function DashBoardPage() {
     setSortColumnIndex(
       columnNames.findIndex((element: string) => element === sort.column),
     );
-    setSortDirection(sort.direction === "asc" ? "ascending" : "descending");
+    setSortDirection(sort.direction === 'asc' ? 'ascending' : 'descending');
   }, [sort, columnNames]);
   useEffect(() => {
     clearSelection();
@@ -882,14 +882,14 @@ function DashBoardPage() {
   if (totalInvoices < 1) return <NoOrdersPage />;
   return (
     <div className={styles.container}>
-      <Page title="Dashboard">
+      <Page title='Dashboard'>
         <Layout>
           {errToast.visible && (
             <Toast
               onDismiss={() => {
                 setErrToast({
                   visible: false,
-                  message: "Something went wrong",
+                  message: 'Something went wrong',
                 });
               }}
               error
@@ -902,12 +902,12 @@ function DashBoardPage() {
               onDismiss={() => {
                 setSuccessToastVisible(false);
               }}
-              content="Mail sent successfully"
+              content='Mail sent successfully'
               duration={2000}
             />
           )}
           <Layout.Section fullWidth>
-            <div style={{ maxWidth: "100%", marginBottom: "2rem" }}>
+            <div style={{ maxWidth: '100%', marginBottom: '2rem' }}>
               <LegacyCard>
                 <IndexFilters
                   loading={
@@ -918,10 +918,10 @@ function DashBoardPage() {
                   }
                   sortOptions={sortOptions}
                   sortSelected={[`${sort.column} ${sort.direction}`]}
-                  onSort={(val) => {
-                    const tempDirection = val[0].split(" ")[1];
-                    const tempColumn = val[0].split(" ")[0];
-                    setParams((prev) => ({
+                  onSort={val => {
+                    const tempDirection = val[0].split(' ')[1];
+                    const tempColumn = val[0].split(' ')[0];
+                    setParams(prev => ({
                       ...prev,
                       direction: tempDirection,
                       column: tempColumn,
@@ -931,15 +931,15 @@ function DashBoardPage() {
                   }}
                   canCreateNewView={false}
                   queryValue={queryValue}
-                  queryPlaceholder="Search by order number or customer name"
+                  queryPlaceholder='Search by order number or customer name'
                   onQueryChange={handleQueryValueChange}
                   onQueryClear={() => {
-                    setQueryValue("");
-                    setParams((prev) => ({
+                    setQueryValue('');
+                    setParams(prev => ({
                       ...prev,
-                      searchText: ""
+                      searchText: ''
                         .trim()
-                        .replace(/[\\^$.*+?()[\]{}|]/g, "\\$&"),
+                        .replace(/[\\^$.*+?()[\]{}|]/g, '\\$&'),
                     }));
                   }}
                   cancelAction={{
@@ -963,14 +963,14 @@ function DashBoardPage() {
                     promotedBulkActions={promotedBulkActions}
                     emptyState={
                       <EmptySearchResult
-                        title="No orders with the applied filters"
-                        description="Try changing the filters or search term"
+                        title='No orders with the applied filters'
+                        description='Try changing the filters or search term'
                         withIllustration
                       />
                     }
                     sortDirection={sortDirection}
                     sortColumnIndex={sortColumnIndex}
-                    onSort={(val) => {
+                    onSort={val => {
                       onSort(val);
                     }}
                     sortable={[
@@ -987,19 +987,19 @@ function DashBoardPage() {
                     resourceName={resourceName}
                     itemCount={orderData.length}
                     selectedItemsCount={
-                      allResourcesSelected ? "All" : selectedResources.length
+                      allResourcesSelected ? 'All' : selectedResources.length
                     }
                     onSelectionChange={handleSelectionChange}
                     headings={[
-                      { title: "Invoice" },
-                      { title: "Order" },
-                      { title: "Date" },
-                      { title: "Name" },
-                      { title: "Total", alignment: "end" },
-                      { title: "Payment" },
-                      { title: "Fulfillment" },
-                      { title: "Status" },
-                      { title: "" },
+                      { title: 'Invoice' },
+                      { title: 'Order' },
+                      { title: 'Date' },
+                      { title: 'Name' },
+                      { title: 'Total', alignment: 'end' },
+                      { title: 'Payment' },
+                      { title: 'Fulfillment' },
+                      { title: 'Status' },
+                      { title: '' },
                     ]}
                   >
                     {rowMarkup}
@@ -1007,27 +1007,25 @@ function DashBoardPage() {
                 </div>
                 <Divider />
                 <LegacyCard.Section>
-                  <LegacyStack distribution="center" alignment="center">
+                  <LegacyStack distribution='center' alignment='center'>
                     <Pagination
                       hasPrevious={currentPage !== 1}
                       previousKeys={[74]}
-                      previousTooltip="Previous (J)"
+                      previousTooltip='Previous (J)'
                       onPrevious={() => {
                         onPageChange(currentPage - 1);
                       }}
                       hasNext={hasNext}
                       nextKeys={[75]}
-                      nextTooltip="Next (K)"
+                      nextTooltip='Next (K)'
                       onNext={() => {
                         onPageChange(currentPage + 1);
                       }}
                     />
-                    <div className="dashboardPage__totalEntryInputContainer">
+                    <div className='dashboardPage__totalEntryInputContainer'>
                       <Select
                         value={String(totalEntryOnPage)}
-                        onChange={(val) =>
-                          onTotalEntryOnPageChange(Number(val))
-                        }
+                        onChange={val => onTotalEntryOnPageChange(Number(val))}
                         options={limitOptions}
                         label={null}
                       />
@@ -1036,7 +1034,7 @@ function DashBoardPage() {
                 </LegacyCard.Section>
               </LegacyCard>
             </div>
-            <Banner icon={HintMajor} status="info">
+            <Banner icon={HintMajor} status='info'>
               Now you can view/download your invoices from your orders page
               itself. Select particular orders (50 max) or open a particular
               order and choose Invoice Hero features from More actions drop

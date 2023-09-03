@@ -1,4 +1,4 @@
-import { Modal } from "@shopify/app-bridge-react";
+import { Modal } from '@shopify/app-bridge-react';
 
 type Props = {
   closeContextualSaveBarActionResultModal: () => void;
@@ -20,8 +20,8 @@ const ContextualSaveBarActionResultModal: React.FC<Props> = ({
 }) => (
   <Modal
     message={
-      contextualSaveBarActionResultModalContent.status === "failed"
-        ? "This feature is available only for the customers who are using the paid version of the app."
+      contextualSaveBarActionResultModalContent.status === 'failed'
+        ? 'This feature is available only for the customers who are using the paid version of the app.'
         : contextualSaveBarActionResultModalContent.message
     }
     open={open}
@@ -31,17 +31,17 @@ const ContextualSaveBarActionResultModal: React.FC<Props> = ({
         ? capitalizeFirstLetter(
             contextualSaveBarActionResultModalContent.status,
           )
-        : contextualSaveBarActionResultModalContent.status === "failed"
-        ? "Upgrade Now"
-        : "Bulk pdf"
+        : contextualSaveBarActionResultModalContent.status === 'failed'
+        ? 'Upgrade Now'
+        : 'Bulk pdf'
     }
     primaryAction={{
       content:
-        contextualSaveBarActionResultModalContent.status === "failed"
-          ? "Start 7 days free trial now"
-          : "Close",
+        contextualSaveBarActionResultModalContent.status === 'failed'
+          ? 'Start 7 days free trial now'
+          : 'Close',
       onAction:
-        contextualSaveBarActionResultModalContent.status === "failed"
+        contextualSaveBarActionResultModalContent.status === 'failed'
           ? redirectContextualSaveBarActionResultModal
           : closeContextualSaveBarActionResultModal,
     }}

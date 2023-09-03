@@ -1,11 +1,11 @@
-import { useAppBridge } from "@shopify/app-bridge-react";
+import { useAppBridge } from '@shopify/app-bridge-react';
 import {
   useMutation,
   UseMutationOptions,
   useQueryClient,
-} from "@tanstack/react-query";
-import { AxiosError } from "axios";
-import { useEffect } from "react";
+} from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { useEffect } from 'react';
 import {
   toggleSendInvoiceAutomaticApiCall,
   updatePlanDiscountApiCall,
@@ -24,22 +24,22 @@ import {
   sendEmailApiCall,
   generatePDFApiCall,
   updateDashboardOpenedOnceAPiCall,
-} from "./api.service";
+} from './api.service';
 import {
   useEmailSettingsQueryTags,
   useSettingsQuery,
   useSettingsQueryTags,
-} from "./queries.service";
+} from './queries.service';
 
 export const useToggleSendInvoiceAutomaticMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError, boolean>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError, boolean>['onSuccess'],
 ) => {
   const appInstance = useAppBridge();
   const { data: settingsData } = useSettingsQuery();
   const queryClient = useQueryClient();
 
   return useMutation<any, Error | AxiosError, boolean>(
-    (sendInvoiceAuto) =>
+    sendInvoiceAuto =>
       toggleSendInvoiceAutomaticApiCall(
         settingsData,
         appInstance,
@@ -57,7 +57,7 @@ export const useToggleSendInvoiceAutomaticMutation = (
 
 // post call use:onboarding step 1
 export const useSetupDataApiCallMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError>['onSuccess'],
 ) => {
   const appInstance = useAppBridge();
   const queryClient = useQueryClient();
@@ -74,7 +74,7 @@ export const useSetupDataApiCallMutation = (
 
 // put call use:pricingOfferPage,  Onboarding step 2
 export const useSettingsUpdateMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError>['onSuccess'],
 ) => {
   const appInstance = useAppBridge();
   const queryClient = useQueryClient();
@@ -91,13 +91,13 @@ export const useSettingsUpdateMutation = (
 
 // post call use: pricingOfferPage,
 export const usePlanDeactivateMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError>['onSuccess'],
 ) => {
   const appInstance = useAppBridge();
   const queryClient = useQueryClient();
 
   return useMutation<any, Error | AxiosError, any>(
-    (data) => addPlanDeactivateMutation(data, appInstance),
+    data => addPlanDeactivateMutation(data, appInstance),
     {
       onSuccess: (data, ...args) => {
         queryClient.setQueryData(useSettingsQueryTags, data);
@@ -109,7 +109,7 @@ export const usePlanDeactivateMutation = (
 
 // post call use: pricingOfferPage
 export const usePlanDiscountMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError>['onSuccess'],
 ) => {
   const appInstance = useAppBridge();
   const queryClient = useQueryClient();
@@ -135,7 +135,7 @@ export const usePlanUpgradedMutation = () => {
   return useMutation<any, Error | AxiosError, { planId: string; data: any }>(
     ({ planId, data }) => updatePlanUpgradedApiCall(planId, data, appInstance),
     {
-      onSuccess: (data) => {
+      onSuccess: data => {
         queryClient.setQueryData(useSettingsQueryTags, data);
       },
     },
@@ -144,12 +144,12 @@ export const usePlanUpgradedMutation = () => {
 
 // put call for add new data use : onboarding step3
 export const useEmailSettingUpdateMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError>['onSuccess'],
 ) => {
   const appInstance = useAppBridge();
   const queryClient = useQueryClient();
   return useMutation<any, Error | AxiosError, any>(
-    (emailSettingsData) =>
+    emailSettingsData =>
       updateEmailSettingsApiCall(emailSettingsData, appInstance),
     {
       onSuccess: (data, ...args) => {
@@ -162,12 +162,12 @@ export const useEmailSettingUpdateMutation = (
 };
 
 export const useImageDataUploadMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError>['onSuccess'],
 ) => {
   const appInstance = useAppBridge();
   const queryClient = useQueryClient();
   return useMutation<any, Error | AxiosError, any>(
-    (imageData) => uploadImageApiCall(imageData, appInstance),
+    imageData => uploadImageApiCall(imageData, appInstance),
     {
       onSuccess: (data, ...args) => {
         queryClient.setQueryData(useEmailSettingsQueryTags, data);
@@ -179,13 +179,12 @@ export const useImageDataUploadMutation = (
 };
 
 export const useChangeSelectedLanguageDataMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError>['onSuccess'],
 ) => {
   const appInstance = useAppBridge();
   const queryClient = useQueryClient();
   return useMutation<any, Error | AxiosError, any>(
-    (languageObject) =>
-      updateLanguageChangeApiCall(languageObject, appInstance),
+    languageObject => updateLanguageChangeApiCall(languageObject, appInstance),
     {
       onSuccess: (data, ...args) => {
         const emailSettingsQueryCache = queryClient
@@ -203,7 +202,7 @@ export const useChangeSelectedLanguageDataMutation = (
 };
 
 export const useFetchLanguageChangeDataMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError>['onSuccess'],
 ) => {
   const appInstance = useAppBridge();
   return useMutation<any, Error | AxiosError, any>(
@@ -217,7 +216,7 @@ export const useFetchLanguageChangeDataMutation = (
 };
 
 export const useUpdateDashboardOpenedOnceUpdateMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError>['onSuccess'],
 ) => {
   const { data: settingsData } = useSettingsQuery({ suspense: false });
   const appInstance = useAppBridge();
@@ -226,7 +225,7 @@ export const useUpdateDashboardOpenedOnceUpdateMutation = (
     any,
     Error | AxiosError,
     any
-  >((data) => updateDashboardOpenedOnceAPiCall(data, appInstance), {
+  >(data => updateDashboardOpenedOnceAPiCall(data, appInstance), {
     onSuccess: (data, ...args) => {
       queryClient.setQueryData(useSettingsQueryTags, data);
       onSuccess?.(data, ...args);
@@ -247,12 +246,12 @@ export const useUpdateDashboardOpenedOnceUpdateMutation = (
 };
 
 export const usePDFDataUploadMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError>['onSuccess'],
 ) => {
   const appInstance = useAppBridge();
   const queryClient = useQueryClient();
   return useMutation<any, Error | AxiosError, any>(
-    (settingsData) => generatePDFApiCall(settingsData, appInstance),
+    settingsData => generatePDFApiCall(settingsData, appInstance),
     {
       onSuccess: (data, ...args) => {
         queryClient.setQueryData([], data);
@@ -263,12 +262,12 @@ export const usePDFDataUploadMutation = (
   );
 };
 export const useSendEmailMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError>['onSuccess'],
 ) => {
   const appInstance = useAppBridge();
   const queryClient = useQueryClient();
   return useMutation<any, Error | AxiosError, any>(
-    (invoice) => sendEmailApiCall(invoice, appInstance),
+    invoice => sendEmailApiCall(invoice, appInstance),
     {
       onSuccess: (data, ...args) => {
         queryClient.setQueryData([], data);
@@ -280,12 +279,12 @@ export const useSendEmailMutation = (
 };
 
 export const useGeneratePDFAndSendEmailMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError>['onSuccess'],
 ) => {
   const appInstance = useAppBridge();
   const queryClient = useQueryClient();
   return useMutation<any, Error | AxiosError, any>(
-    (invoice) => generatePDFAndSendEmailApiCall(invoice, appInstance),
+    invoice => generatePDFAndSendEmailApiCall(invoice, appInstance),
     {
       onSuccess: (data, ...args) => {
         queryClient.setQueryData([], data);
@@ -297,12 +296,12 @@ export const useGeneratePDFAndSendEmailMutation = (
 };
 
 export const useMergedPDFsToOwnerMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError>['onSuccess'],
 ) => {
   const appInstance = useAppBridge();
   const queryClient = useQueryClient();
   return useMutation<any, Error | AxiosError, any>(
-    (invoices) => sendMergedPDFsToOwnerApiCall(invoices, appInstance),
+    invoices => sendMergedPDFsToOwnerApiCall(invoices, appInstance),
     {
       onSuccess: (data, ...args) => {
         queryClient.setQueryData([], data);
@@ -314,12 +313,12 @@ export const useMergedPDFsToOwnerMutation = (
 };
 
 export const useSendPDFsToCustomersMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError>['onSuccess'],
 ) => {
   const appInstance = useAppBridge();
   const queryClient = useQueryClient();
   return useMutation<any, Error | AxiosError, any>(
-    (invoices) => sendPDFsToCustomersApiCall(invoices, appInstance),
+    invoices => sendPDFsToCustomersApiCall(invoices, appInstance),
     {
       onSuccess: (data, ...args) => {
         queryClient.setQueryData([], data);
@@ -330,12 +329,12 @@ export const useSendPDFsToCustomersMutation = (
   );
 };
 export const useSendPDFsToOwnerMutation = (
-  onSuccess?: UseMutationOptions<any, Error | AxiosError>["onSuccess"],
+  onSuccess?: UseMutationOptions<any, Error | AxiosError>['onSuccess'],
 ) => {
   const appInstance = useAppBridge();
   const queryClient = useQueryClient();
   return useMutation<any, Error | AxiosError, any>(
-    (invoices) => sendPDFsToOwnerApiCall(invoices, appInstance),
+    invoices => sendPDFsToOwnerApiCall(invoices, appInstance),
     {
       onSuccess: (data, ...args) => {
         queryClient.setQueryData([], data);

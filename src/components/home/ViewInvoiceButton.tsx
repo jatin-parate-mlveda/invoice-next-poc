@@ -1,6 +1,6 @@
-import { Button } from "@shopify/polaris";
-import { ExternalMinor } from "@shopify/polaris-icons";
-import { usePDFDataUploadMutation } from "@/services/mutations.service";
+import { Button } from '@shopify/polaris';
+import { ExternalMinor } from '@shopify/polaris-icons';
+import { usePDFDataUploadMutation } from '@/services/mutations.service';
 
 const ViewInvoiceButton: React.FC<{
   orderData: any;
@@ -13,8 +13,8 @@ const ViewInvoiceButton: React.FC<{
   const openPDF = () => {
     if (invoice.isPDFCreated) {
       const invoiceLink = new URL(invoice.invoiceLink);
-      invoiceLink.searchParams.append("timestamp", Date.now().toString());
-      window.open(invoiceLink.toString(), "_blank");
+      invoiceLink.searchParams.append('timestamp', Date.now().toString());
+      window.open(invoiceLink.toString(), '_blank');
     } else {
       const reqData = {
         orderId: invoice.orderId,
@@ -33,10 +33,10 @@ const ViewInvoiceButton: React.FC<{
             }
           }
 
-          window.open(data.link, "_blank");
+          window.open(data.link, '_blank');
         },
         onError: () => {
-          setErrToast({ visible: true, message: "Something went wrong" });
+          setErrToast({ visible: true, message: 'Something went wrong' });
         },
       });
     }
@@ -46,7 +46,7 @@ const ViewInvoiceButton: React.FC<{
       disabled={false}
       plain
       onClick={() => openPDF()}
-      id=""
+      id=''
       icon={ExternalMinor}
     >
       {invoice.orderNum}

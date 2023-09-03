@@ -6,9 +6,9 @@ import {
   LegacyStack,
   Popover,
   TextField,
-} from "@shopify/polaris";
-import { CalendarMinor } from "@shopify/polaris-icons";
-import { useEffect, useState } from "react";
+} from '@shopify/polaris';
+import { CalendarMinor } from '@shopify/polaris-icons';
+import { useEffect, useState } from 'react';
 
 const DatePickerExample: React.FC<{
   onStartDateChange: (temp: any) => void;
@@ -40,14 +40,14 @@ const DatePickerExample: React.FC<{
     endYear: selectedEndDate.getFullYear(),
   });
   const [formattedStartValue, setFormattedStartValue] = useState(() => {
-    if (!startDateChanged) return "";
+    if (!startDateChanged) return '';
     const tempStartDate = new Date(selectedStartDate);
     tempStartDate.setDate(tempStartDate.getDate() + 1);
     return tempStartDate.toISOString().slice(0, 10);
   });
 
   const [formattedEndValue, setFormattedEndValue] = useState(() => {
-    if (!endDateChanged) return "";
+    if (!endDateChanged) return '';
     const tempEndDate = new Date(selectedEndDate);
     tempEndDate.setDate(tempEndDate.getDate() + 1);
     return tempEndDate.toISOString().slice(0, 10);
@@ -60,7 +60,7 @@ const DatePickerExample: React.FC<{
     setEndVisible(false);
   }
   function handleMonthChange(monthVal: any, yearVal: any, curr: string) {
-    if (curr === "start")
+    if (curr === 'start')
       setStartDate({ startMonth: monthVal, startYear: yearVal });
     else setEndDate({ endMonth: monthVal, endYear: yearVal });
   }
@@ -70,7 +70,7 @@ const DatePickerExample: React.FC<{
   ) {
     const tempNewDate = new Date(newSelectedDate);
     tempNewDate.setDate(tempNewDate.getDate() + 1);
-    if (curr === "start") {
+    if (curr === 'start') {
       setFormattedStartValue(tempNewDate.toISOString().slice(0, 10));
       onStartDateChange(newSelectedDate);
       setSelectedStartDate(newSelectedDate);
@@ -100,29 +100,29 @@ const DatePickerExample: React.FC<{
     }
   }, [selectedEndDate]);
   return (
-    <LegacyStack alignment="center">
-      <Box minWidth="276px" padding={{ xs: "2" }}>
+    <LegacyStack alignment='center'>
+      <Box minWidth='276px' padding={{ xs: '2' }}>
         <Popover
           active={startVisible}
-          autofocusTarget="none"
-          preferredAlignment="left"
+          autofocusTarget='none'
+          preferredAlignment='left'
           fullWidth
           preferInputActivator={false}
-          preferredPosition="below"
+          preferredPosition='below'
           preventCloseOnChildOverlayClick
           onClose={() => handleOnStartClose}
           activator={
             <TextField
-              placeholder="YYYY-MM-DD"
-              role="combobox"
-              label="Start date"
+              placeholder='YYYY-MM-DD'
+              role='combobox'
+              label='Start date'
               prefix={<Icon source={CalendarMinor} />}
               value={formattedStartValue}
               onFocus={() => {
                 setStartVisible(true);
                 setEndVisible(false);
               }}
-              autoComplete="off"
+              autoComplete='off'
             />
           }
         >
@@ -134,10 +134,10 @@ const DatePickerExample: React.FC<{
                 year={startYear}
                 selected={selectedStartDate}
                 onMonthChange={(monthVal, yearVal) =>
-                  handleMonthChange(monthVal, yearVal, "start")
+                  handleMonthChange(monthVal, yearVal, 'start')
                 }
-                onChange={(range) => {
-                  handleDateSelection(range, "start");
+                onChange={range => {
+                  handleDateSelection(range, 'start');
                 }}
               />
             </LegacyCard.Section>
@@ -145,25 +145,25 @@ const DatePickerExample: React.FC<{
         </Popover>
         <Popover
           active={endVisible}
-          autofocusTarget="none"
-          preferredAlignment="left"
+          autofocusTarget='none'
+          preferredAlignment='left'
           fullWidth
           preferInputActivator={false}
-          preferredPosition="below"
+          preferredPosition='below'
           preventCloseOnChildOverlayClick
           onClose={() => handleOnEndClose}
           activator={
             <TextField
-              placeholder="YYYY-MM-DD"
-              role="combobox"
-              label="End date"
+              placeholder='YYYY-MM-DD'
+              role='combobox'
+              label='End date'
               prefix={<Icon source={CalendarMinor} />}
               value={formattedEndValue}
               onFocus={() => {
                 setEndVisible(true);
                 setStartVisible(false);
               }}
-              autoComplete="off"
+              autoComplete='off'
             />
           }
         >
@@ -178,10 +178,10 @@ const DatePickerExample: React.FC<{
                 year={endYear}
                 selected={selectedEndDate}
                 onMonthChange={(monthVal, yearVal) =>
-                  handleMonthChange(monthVal, yearVal, "end")
+                  handleMonthChange(monthVal, yearVal, 'end')
                 }
-                onChange={(range) => {
-                  handleDateSelection(range, "end");
+                onChange={range => {
+                  handleDateSelection(range, 'end');
                 }}
               />
             </LegacyCard.Section>

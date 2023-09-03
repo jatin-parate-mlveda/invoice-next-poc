@@ -1,8 +1,8 @@
 import createApp, {
   AppBridgeState,
   ClientApplication,
-} from "@shopify/app-bridge";
-import { AppLink, NavigationMenu } from "@shopify/app-bridge/actions";
+} from '@shopify/app-bridge';
+import { AppLink, NavigationMenu } from '@shopify/app-bridge/actions';
 
 let appBridgeInstance: ClientApplication<AppBridgeState> | null = null;
 let appNavigation: null | NavigationMenu.NavigationMenu = null;
@@ -10,10 +10,10 @@ let appNavigation: null | NavigationMenu.NavigationMenu = null;
 export const initializeAppBridge = () => {
   appBridgeInstance = createApp({
     apiKey: process.env.NEXT_PUBLIC_SHOPIFY_API_KEY!,
-    host: new URLSearchParams(window.location.search).get("host")!,
+    host: new URLSearchParams(window.location.search).get('host')!,
   });
-  appBridgeInstance.error((errData) => {
-    console.log("Found error:", errData);
+  appBridgeInstance.error(errData => {
+    console.log('Found error:', errData);
   });
 
   // @ts-ignore
@@ -29,20 +29,20 @@ export function createAppNavigation(isSetupCompleted = false) {
   appNavigation = NavigationMenu.create(appBridgeInstance!, {
     items: [
       AppLink.create(appBridgeInstance!, {
-        label: "Invoices",
-        destination: "/",
+        label: 'Invoices',
+        destination: '/',
       }),
       AppLink.create(appBridgeInstance!, {
-        label: "Settings",
-        destination: "/settings",
+        label: 'Settings',
+        destination: '/settings',
       }),
       AppLink.create(appBridgeInstance!, {
-        label: "Pricing",
-        destination: "/pricing",
+        label: 'Pricing',
+        destination: '/pricing',
       }),
       AppLink.create(appBridgeInstance!, {
-        label: "Support",
-        destination: "/support",
+        label: 'Support',
+        destination: '/support',
       }),
     ],
   });

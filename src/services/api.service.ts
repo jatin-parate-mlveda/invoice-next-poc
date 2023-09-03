@@ -1,13 +1,13 @@
-import { AppBridgeState, ClientApplication } from "@shopify/app-bridge";
-import { getSessionToken } from "@shopify/app-bridge/utilities";
-import axios, { AxiosResponse } from "axios";
-import { GlobalPlan, LanguageData, allPlan } from "@/types/api.types";
+import { AppBridgeState, ClientApplication } from '@shopify/app-bridge';
+import { getSessionToken } from '@shopify/app-bridge/utilities';
+import axios, { AxiosResponse } from 'axios';
+import { GlobalPlan, LanguageData, allPlan } from '@/types/api.types';
 
-import { apiEndpointWithTrailingSlash } from "@/utils/constant";
+import { apiEndpointWithTrailingSlash } from '@/utils/constant';
 
 const axiosInstance = axios.create({
   headers: {
-    frontend: "1",
+    frontend: '1',
   },
   baseURL: apiEndpointWithTrailingSlash,
 });
@@ -16,48 +16,48 @@ export const httpInterceptor = axiosInstance;
 
 const addOrderDataToSettingsRes = (res: AxiosResponse): void => {
   const tempOrder = { ...res.data.orders };
-  tempOrder.note = "This invoice is for your P.O. 4356 ";
+  tempOrder.note = 'This invoice is for your P.O. 4356 ';
   tempOrder.total_refunded_amount = {
     shop_money: {
-      amount: "10.00",
-      currency_code: "INR",
+      amount: '10.00',
+      currency_code: 'INR',
     },
     presentment_money: {
-      amount: "10.00",
-      currency_code: "INR",
+      amount: '10.00',
+      currency_code: 'INR',
     },
   };
 
   tempOrder.total_tip_received = {
     shop_money: {
-      amount: "0.00",
+      amount: '0.00',
       currency_code: res.data.storeCurrency,
     },
     presentment_money: {
-      amount: "0.00",
+      amount: '0.00',
       currency_code: res.data.storeCurrency,
     },
   };
   tempOrder.netPaymentSet = {
     shop_money: {
-      amount: "0.00",
+      amount: '0.00',
       amountNumber: 0,
       currency_code: res.data.storeCurrency,
     },
     presentment_money: {
-      amount: "0.00",
+      amount: '0.00',
       amountNumber: 0,
       currency_code: res.data.storeCurrency,
     },
   };
   tempOrder.outstandingSet = {
     shop_money: {
-      amount: "254.98",
+      amount: '254.98',
       amountNumber: 254.98,
       currency_code: res.data.storeCurrency,
     },
     presentment_money: {
-      amount: "254.98",
+      amount: '254.98',
       amountNumber: 254.98,
       currency_code: res.data.storeCurrency,
     },
@@ -66,97 +66,97 @@ const addOrderDataToSettingsRes = (res: AxiosResponse): void => {
     {
       id: 509562969,
       order_id: 450789469,
-      created_at: "2019-07-04T15:12:40-04:00",
-      note: "it broke during shipping",
+      created_at: '2019-07-04T15:12:40-04:00',
+      note: 'it broke during shipping',
       user_id: 799407056,
-      processed_at: "2019-07-04T15:12:40-04:00",
+      processed_at: '2019-07-04T15:12:40-04:00',
       restock: true,
-      admin_graphql_api_id: "gid://shopify/Refund/509562969",
+      admin_graphql_api_id: 'gid://shopify/Refund/509562969',
       refund_line_items: [
         {
           id: 104689539,
           quantity: 1,
           line_item_id: 703073504,
           location_id: 487838322,
-          restock_type: "legacy_restock",
+          restock_type: 'legacy_restock',
           subtotal: 199.0,
           total_tax: 3.98,
           subtotal_set: {
             shop_money: {
-              amount: "199.00",
-              currency_code: "USD",
+              amount: '199.00',
+              currency_code: 'USD',
             },
             presentment_money: {
-              amount: "199.00",
-              currency_code: "USD",
+              amount: '199.00',
+              currency_code: 'USD',
             },
           },
           total_tax_set: {
             shop_money: {
-              amount: "3.98",
-              currency_code: "USD",
+              amount: '3.98',
+              currency_code: 'USD',
             },
             presentment_money: {
-              amount: "3.98",
-              currency_code: "USD",
+              amount: '3.98',
+              currency_code: 'USD',
             },
           },
           line_item: {
             id: 703073504,
             variant_id: 457924702,
-            title: "IPod Nano - 8gb",
+            title: 'IPod Nano - 8gb',
             quantity: 1,
-            sku: "IPOD2008BLACK",
-            variant_title: "black",
+            sku: 'IPOD2008BLACK',
+            variant_title: 'black',
             vendor: null,
             product_id: 632910392,
             requires_shipping: true,
             taxable: true,
             gift_card: false,
-            name: "IPod Nano - 8gb - black",
-            variant_inventory_management: "shopify",
+            name: 'IPod Nano - 8gb - black',
+            variant_inventory_management: 'shopify',
             properties: [],
             product_exists: true,
             fulfillable_quantity: 1,
             grams: 200,
-            price: "199.00",
-            total_discount: "0.00",
+            price: '199.00',
+            total_discount: '0.00',
             fulfillment_status: null,
             price_set: {
               shop_money: {
-                amount: "199.00",
-                currency_code: "USD",
+                amount: '199.00',
+                currency_code: 'USD',
               },
               presentment_money: {
-                amount: "199.00",
-                currency_code: "USD",
+                amount: '199.00',
+                currency_code: 'USD',
               },
             },
             total_discount_set: {
               shop_money: {
-                amount: "0.00",
-                currency_code: "USD",
+                amount: '0.00',
+                currency_code: 'USD',
               },
               presentment_money: {
-                amount: "0.00",
-                currency_code: "USD",
+                amount: '0.00',
+                currency_code: 'USD',
               },
             },
             discount_allocations: [],
-            admin_graphql_api_id: "gid://shopify/LineItem/703073504",
+            admin_graphql_api_id: 'gid://shopify/LineItem/703073504',
             tax_lines: [
               {
-                title: "State Tax",
-                price: "3.98",
+                title: 'State Tax',
+                price: '3.98',
                 rate: 0.06,
                 price_set: {
                   shop_money: {
-                    amount: "3.98",
-                    currency_code: "USD",
+                    amount: '3.98',
+                    currency_code: 'USD',
                   },
                   presentment_money: {
-                    amount: "3.98",
-                    currency_code: "USD",
+                    amount: '3.98',
+                    currency_code: 'USD',
                   },
                 },
               },
@@ -168,94 +168,94 @@ const addOrderDataToSettingsRes = (res: AxiosResponse): void => {
           quantity: 1,
           line_item_id: 466157049,
           location_id: 487838322,
-          restock_type: "legacy_restock",
+          restock_type: 'legacy_restock',
           subtotal: 199.0,
           total_tax: 3.98,
           subtotal_set: {
             shop_money: {
-              amount: "199.00",
-              currency_code: "USD",
+              amount: '199.00',
+              currency_code: 'USD',
             },
             presentment_money: {
-              amount: "199.00",
-              currency_code: "USD",
+              amount: '199.00',
+              currency_code: 'USD',
             },
           },
           total_tax_set: {
             shop_money: {
-              amount: "3.98",
-              currency_code: "USD",
+              amount: '3.98',
+              currency_code: 'USD',
             },
             presentment_money: {
-              amount: "3.98",
-              currency_code: "USD",
+              amount: '3.98',
+              currency_code: 'USD',
             },
           },
           line_item: {
             id: 466157049,
             variant_id: 39072856,
-            title: "IPod Nano - 8gb",
+            title: 'IPod Nano - 8gb',
             quantity: 2,
-            sku: "IPOD2008GREEN",
-            variant_title: "green",
+            sku: 'IPOD2008GREEN',
+            variant_title: 'green',
             vendor: null,
             product_id: 632910392,
             requires_shipping: true,
             taxable: true,
             gift_card: false,
-            name: "IPod Nano - 8gb - green",
-            variant_inventory_management: "shopify",
+            name: 'IPod Nano - 8gb - green',
+            variant_inventory_management: 'shopify',
             properties: [
               {
-                name: "Custom Engraving Front",
-                value: "Happy Birthday",
+                name: 'Custom Engraving Front',
+                value: 'Happy Birthday',
               },
               {
-                name: "Custom Engraving Back",
-                value: "Merry Christmas",
+                name: 'Custom Engraving Back',
+                value: 'Merry Christmas',
               },
             ],
             product_exists: true,
             fulfillable_quantity: 1,
             grams: 200,
-            price: "199.00",
-            total_discount: "0.00",
+            price: '199.00',
+            total_discount: '0.00',
             fulfillment_status: null,
             price_set: {
               shop_money: {
-                amount: "199.00",
-                currency_code: "USD",
+                amount: '199.00',
+                currency_code: 'USD',
               },
               presentment_money: {
-                amount: "199.00",
-                currency_code: "USD",
+                amount: '199.00',
+                currency_code: 'USD',
               },
             },
             total_discount_set: {
               shop_money: {
-                amount: "0.00",
-                currency_code: "USD",
+                amount: '0.00',
+                currency_code: 'USD',
               },
               presentment_money: {
-                amount: "0.00",
-                currency_code: "USD",
+                amount: '0.00',
+                currency_code: 'USD',
               },
             },
             discount_allocations: [],
-            admin_graphql_api_id: "gid://shopify/LineItem/466157049",
+            admin_graphql_api_id: 'gid://shopify/LineItem/466157049',
             tax_lines: [
               {
-                title: "State Tax",
-                price: "3.98",
+                title: 'State Tax',
+                price: '3.98',
                 rate: 0.06,
                 price_set: {
                   shop_money: {
-                    amount: "3.98",
-                    currency_code: "USD",
+                    amount: '3.98',
+                    currency_code: 'USD',
                   },
                   presentment_money: {
-                    amount: "3.98",
-                    currency_code: "USD",
+                    amount: '3.98',
+                    currency_code: 'USD',
                   },
                 },
               },
@@ -267,13 +267,13 @@ const addOrderDataToSettingsRes = (res: AxiosResponse): void => {
         {
           id: 179259969,
           order_id: 450789469,
-          kind: "refund",
-          gateway: "bogus",
-          status: "success",
+          kind: 'refund',
+          gateway: 'bogus',
+          status: 'success',
           message: null,
-          created_at: "2005-08-05T12:59:12-04:00",
+          created_at: '2005-08-05T12:59:12-04:00',
           test: false,
-          authorization: "authorization-key",
+          authorization: 'authorization-key',
 
           location_id: null,
 
@@ -281,7 +281,7 @@ const addOrderDataToSettingsRes = (res: AxiosResponse): void => {
 
           parent_id: 801038806,
 
-          processed_at: "2005-08-05T12:59:12-04:00",
+          processed_at: '2005-08-05T12:59:12-04:00',
 
           device_id: null,
 
@@ -289,13 +289,13 @@ const addOrderDataToSettingsRes = (res: AxiosResponse): void => {
 
           error_code: null,
 
-          source_name: "web",
+          source_name: 'web',
 
-          amount: "10.00",
+          amount: '10.00',
 
-          currency: "USD",
+          currency: 'USD',
 
-          admin_graphql_api_id: "gid://shopify/OrderTransaction/179259969",
+          admin_graphql_api_id: 'gid://shopify/OrderTransaction/179259969',
         },
       ],
 
@@ -309,19 +309,19 @@ const addOrderDataToSettingsRes = (res: AxiosResponse): void => {
 
       order_id: 450789469,
 
-      kind: "refund",
+      kind: 'refund',
 
-      gateway: "bogus",
+      gateway: 'bogus',
 
-      status: "success",
+      status: 'success',
 
       message: null,
 
-      created_at: "2005-08-05T12:59:12-04:00",
+      created_at: '2005-08-05T12:59:12-04:00',
 
       test: false,
 
-      authorization: "authorization-key",
+      authorization: 'authorization-key',
 
       location_id: null,
 
@@ -329,7 +329,7 @@ const addOrderDataToSettingsRes = (res: AxiosResponse): void => {
 
       parent_id: 801038806,
 
-      processed_at: "2005-08-05T12:59:12-04:00",
+      processed_at: '2005-08-05T12:59:12-04:00',
 
       device_id: null,
 
@@ -337,13 +337,13 @@ const addOrderDataToSettingsRes = (res: AxiosResponse): void => {
 
       error_code: null,
 
-      source_name: "web",
+      source_name: 'web',
 
-      amount: "10.00",
+      amount: '10.00',
 
-      currency: "INR",
+      currency: 'INR',
 
-      admin_graphql_api_id: "gid://shopify/OrderTransaction/179259969",
+      admin_graphql_api_id: 'gid://shopify/OrderTransaction/179259969',
 
       payment_details: {
         credit_card_bin: null,
@@ -352,22 +352,22 @@ const addOrderDataToSettingsRes = (res: AxiosResponse): void => {
 
         cvv_result_code: null,
 
-        credit_card_number: "•••• •••• •••• 4242",
+        credit_card_number: '•••• •••• •••• 4242',
 
-        credit_card_company: "Visa",
+        credit_card_company: 'Visa',
       },
     },
   ];
 
   tempOrder.netPaymentSet = {
     presentment_money: {
-      amount: "0.00",
+      amount: '0.00',
 
       currency_code: res.data.storeCurrency,
     },
 
     shop_money: {
-      amount: "0.00",
+      amount: '0.00',
 
       currency_code: res.data.storeCurrency,
     },
@@ -375,19 +375,19 @@ const addOrderDataToSettingsRes = (res: AxiosResponse): void => {
 
   tempOrder.paidByCustomerSet = {
     presentment_money: {
-      amount: "10.00",
+      amount: '10.00',
 
       currency_code: res.data.storeCurrency,
     },
 
     shop_money: {
-      amount: "10.00",
+      amount: '10.00',
 
       currency_code: res.data.storeCurrency,
     },
   };
 
-  tempOrder.gateway = "Bank transfer";
+  tempOrder.gateway = 'Bank transfer';
 
   tempOrder.payment_details = {
     credit_card_bin: null,
@@ -396,36 +396,36 @@ const addOrderDataToSettingsRes = (res: AxiosResponse): void => {
 
     cvv_result_code: null,
 
-    credit_card_number: "•••• •••• •••• 4242",
+    credit_card_number: '•••• •••• •••• 4242',
 
-    credit_card_company: "Visa",
+    credit_card_company: 'Visa',
   };
 
-  tempOrder.invoicehero_vatNumber = "GB123456789";
+  tempOrder.invoicehero_vatNumber = 'GB123456789';
 
   for (let i = 0; i < tempOrder.line_items.length; i += 1) {
     if (i === 0) {
-      tempOrder.line_items[i].barcode = "12345 00010";
+      tempOrder.line_items[i].barcode = '12345 00010';
 
-      tempOrder.line_items[i].countryOfOrigin = "US";
+      tempOrder.line_items[i].countryOfOrigin = 'US';
 
-      tempOrder.line_items[i].hsCode = "900410";
+      tempOrder.line_items[i].hsCode = '900410';
 
-      tempOrder.line_items[i].productWeight = "10 g";
+      tempOrder.line_items[i].productWeight = '10 g';
 
       tempOrder.line_items[i].productImg =
-        "https://mlveda-shopifyapps.s3.amazonaws.com/invoice-hero/sunglasses.jpg";
+        'https://mlveda-shopifyapps.s3.amazonaws.com/invoice-hero/sunglasses.jpg';
     } else {
-      tempOrder.line_items[i].barcode = "12345 00011";
+      tempOrder.line_items[i].barcode = '12345 00011';
 
-      tempOrder.line_items[i].countryOfOrigin = "US";
+      tempOrder.line_items[i].countryOfOrigin = 'US';
 
-      tempOrder.line_items[i].hsCode = "900412";
+      tempOrder.line_items[i].hsCode = '900412';
 
-      tempOrder.line_items[i].productWeight = "20 g";
+      tempOrder.line_items[i].productWeight = '20 g';
 
       tempOrder.line_items[i].productImg =
-        "https://mlveda-shopifyapps.s3.amazonaws.com/invoice-hero/noImage.png";
+        'https://mlveda-shopifyapps.s3.amazonaws.com/invoice-hero/noImage.png';
     }
   }
 
@@ -436,7 +436,7 @@ export const fetchSettings = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.get("/api/settings", {
+  const res = await axiosInstance.get('/api/settings', {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -450,7 +450,7 @@ export const fetchShopData = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.get("/api/shop", {
+  const res = await axiosInstance.get('/api/shop', {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -462,7 +462,7 @@ export const fetchEmailSettings = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.get("/api/emailSettings", {
+  const res = await axiosInstance.get('/api/emailSettings', {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -475,7 +475,7 @@ export const fetchLanguageData = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.get("/api/language", {
+  const res = await axiosInstance.get('/api/language', {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -487,7 +487,7 @@ export const fetchTemplateData = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.get("/api/template", {
+  const res = await axiosInstance.get('/api/template', {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -499,7 +499,7 @@ export const fetchFontFamiliesData = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.get("/api/fontFamilies", {
+  const res = await axiosInstance.get('/api/fontFamilies', {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -511,7 +511,7 @@ export const fetchTotalOrders = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.get("/api/order/count", {
+  const res = await axiosInstance.get('/api/order/count', {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -524,7 +524,7 @@ export const fetchInvoices = async (
   passedParameters: any,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.get("/api/order", {
+  const res = await axiosInstance.get('/api/order', {
     params: {
       OrderBy: passedParameters.direction,
       sortBy: passedParameters.column,
@@ -551,7 +551,7 @@ export const updateSettingsApiCall = async (
 ) => {
   const jwt = await getSessionToken(appInstance);
 
-  const res = await axiosInstance.put("/api/settings", settingsData, {
+  const res = await axiosInstance.put('/api/settings', settingsData, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -565,10 +565,10 @@ export const uploadImageApiCall = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const bodyFormData = new FormData();
-  bodyFormData.append("emailMessageImage", imageData);
+  bodyFormData.append('emailMessageImage', imageData);
   const jwt = await getSessionToken(appInstance);
   const res = await axiosInstance.post(
-    "/api/emailSettings/uploadImageForMessage",
+    '/api/emailSettings/uploadImageForMessage',
     bodyFormData,
     {
       headers: {
@@ -592,7 +592,7 @@ export const toggleSendInvoiceAutomaticApiCall = async (
           invoiceSettings: {
             sendInvoiceAutomatic: true,
             orderCreateSendInvoiceAutomatic:
-              firstTimeSendInvoiceAutomaticEvent === "CREATED",
+              firstTimeSendInvoiceAutomaticEvent === 'CREATED',
             orderRefundSendInvoiceAutomatic: true,
             orderCancelSendInvoiceAutomatic: true,
             orderEditSendInvoiceAutomatic: true,
@@ -619,7 +619,7 @@ export const fetchAllPlans = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.get("/plan", {
+  const res = await axiosInstance.get('/plan', {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -633,7 +633,7 @@ export const updateSetupDataApiCall = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.put("/api/settings", settingsData, {
+  const res = await axiosInstance.put('/api/settings', settingsData, {
     headers: { Authorization: `Bearer ${jwt}` },
   });
   return res.data;
@@ -644,7 +644,7 @@ export const fetchGlobalPlans = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.get("/plan/global", {
+  const res = await axiosInstance.get('/plan/global', {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -659,7 +659,7 @@ export const addPlanDeactivateMutation = async (
 ) => {
   const jwt = await getSessionToken(appInstance);
 
-  const res = await axiosInstance.post("plan/deactivate", data, {
+  const res = await axiosInstance.post('plan/deactivate', data, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -690,7 +690,7 @@ export const updateLanguageChangeApiCall = async (
 ) => {
   const jwt = await getSessionToken(appInstance);
   const res = await axiosInstance.post(
-    "/api/settings/changelanguage",
+    '/api/settings/changelanguage',
     language,
     {
       headers: {
@@ -712,7 +712,7 @@ export const addSetupSettingChangeLanguageApiCall = async (
 ) => {
   const jwt = await getSessionToken(appInstance);
   const res = await axiosInstance.post(
-    "/api/settings/changelanguage",
+    '/api/settings/changelanguage',
     languageData,
     {
       headers: { Authorization: `Bearer ${jwt}` },
@@ -729,7 +729,7 @@ export const updatePlanDiscountApiCall = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.post("plan/discount", discountState, {
+  const res = await axiosInstance.post('plan/discount', discountState, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -743,7 +743,7 @@ export const updateEmailSettingsApiCall = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.put("/api/emailSettings", emailSettingsData, {
+  const res = await axiosInstance.put('/api/emailSettings', emailSettingsData, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -774,7 +774,7 @@ export const fetchCustomPricingPlans = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.get("api/custom-price", {
+  const res = await axiosInstance.get('api/custom-price', {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -789,7 +789,7 @@ export const updateDashboardOpenedOnceAPiCall = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.put("/api/settings", data, {
+  const res = await axiosInstance.put('/api/settings', data, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -802,7 +802,7 @@ export const generatePDFApiCall = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.post("/api/order/generatePDF", reqData, {
+  const res = await axiosInstance.post('/api/order/generatePDF', reqData, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -814,7 +814,7 @@ export const sendEmailApiCall = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.post("/api/order/sendEmail", reqData, {
+  const res = await axiosInstance.post('/api/order/sendEmail', reqData, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -828,7 +828,7 @@ export const generatePDFAndSendEmailApiCall = async (
 ) => {
   const jwt = await getSessionToken(appInstance);
   const res = await axiosInstance.post(
-    "/api/order/generatePDFAndSendEmail",
+    '/api/order/generatePDFAndSendEmail',
     reqData,
     {
       headers: {
@@ -844,7 +844,7 @@ export const sendMergedPDFsToOwnerApiCall = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.post("/api/order/bulk/print", ordersData, {
+  const res = await axiosInstance.post('/api/order/bulk/print', ordersData, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -857,7 +857,7 @@ export const sendPDFsToCustomersApiCall = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.post("/api/order/bulk/send", ordersData, {
+  const res = await axiosInstance.post('/api/order/bulk/send', ordersData, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -870,7 +870,7 @@ export const sendPDFsToOwnerApiCall = async (
   appInstance: ClientApplication<AppBridgeState>,
 ) => {
   const jwt = await getSessionToken(appInstance);
-  const res = await axiosInstance.post("/api/order/bulk", ordersData, {
+  const res = await axiosInstance.post('/api/order/bulk', ordersData, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
