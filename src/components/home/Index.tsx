@@ -1,26 +1,15 @@
 import {
   IndexTable,
-  LegacyCard,
-  IndexFilters,
   useSetIndexFiltersMode,
   useIndexResourceState,
   ChoiceList,
   Badge,
   IndexFiltersMode,
-  Page,
-  Layout,
-  Banner,
-  LegacyStack,
-  Pagination,
-  Divider,
-  Select,
   EmptySearchResult,
 } from '@shopify/polaris';
 import type { IndexFiltersProps } from '@shopify/polaris';
-import { HintMajor } from '@shopify/polaris-icons';
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { Toast } from '@shopify/app-bridge-react';
 import moment from 'moment';
 import { useDebounce } from 'usehooks-ts';
 import {
@@ -42,12 +31,67 @@ import {
 } from '@/services/mutations.service';
 import ActionPopover from './ActionPopover';
 
-import ContextualSaveBarActionResultModal from './ContextualSaveBarActionResultModal';
 import NoOrdersPage from './NoOrdersPage';
 import DateRangePicker from './DatePicker';
 import styles from './Dashboard.module.scss';
 import ViewInvoiceButton from './ViewInvoiceButton';
 import { useRouter } from 'next/router';
+import HomeLayout from './HomeLayout';
+
+const sortOptions: IndexFiltersProps['sortOptions'] = [
+  { label: 'Invoice', value: 'orderNo asc', directionLabel: 'Ascending' },
+  { label: 'Invoice', value: 'orderNo desc', directionLabel: 'Descending' },
+  {
+    label: 'Order',
+    value: 'shopifyOrderNo asc',
+    directionLabel: 'Ascending',
+  },
+  {
+    label: 'Order',
+    value: 'shopifyOrderNo desc',
+    directionLabel: 'Descending',
+  },
+  {
+    label: 'Date',
+    value: 'invoiceDate asc',
+    directionLabel: 'Oldest to newest',
+  },
+  {
+    label: 'Date',
+    value: 'invoiceDate desc',
+    directionLabel: 'Newest to oldest',
+  },
+  { label: 'Customer', value: 'customerName asc', directionLabel: 'A-Z' },
+  { label: 'Customer', value: 'customerName desc', directionLabel: 'Z-A' },
+  { label: 'Total', value: 'total asc', directionLabel: 'Lowest to highest' },
+  {
+    label: 'Total',
+    value: 'total desc',
+    directionLabel: 'Highest to lowest',
+  },
+  { label: 'Payment', value: 'paymentStatus asc', directionLabel: 'A-Z' },
+  { label: 'Payment', value: 'paymentStatus desc', directionLabel: 'Z-A' },
+  {
+    label: 'Fulfillment',
+    value: 'fulfillmentStatus asc',
+    directionLabel: 'A-Z',
+  },
+  {
+    label: 'Fulfillment',
+    value: 'fulfillmentStatus desc',
+    directionLabel: 'Z-A',
+  },
+  {
+    label: 'Status',
+    value: 'status asc',
+    directionLabel: 'A-Z',
+  },
+  {
+    label: 'Status',
+    value: 'status desc',
+    directionLabel: 'Z-A',
+  },
+];
 
 function DashBoardPage() {
   const [errToast, setErrToast] = useState<{
@@ -110,60 +154,6 @@ function DashBoardPage() {
     status: '',
     message: '',
   });
-  const sortOptions: IndexFiltersProps['sortOptions'] = [
-    { label: 'Invoice', value: 'orderNo asc', directionLabel: 'Ascending' },
-    { label: 'Invoice', value: 'orderNo desc', directionLabel: 'Descending' },
-    {
-      label: 'Order',
-      value: 'shopifyOrderNo asc',
-      directionLabel: 'Ascending',
-    },
-    {
-      label: 'Order',
-      value: 'shopifyOrderNo desc',
-      directionLabel: 'Descending',
-    },
-    {
-      label: 'Date',
-      value: 'invoiceDate asc',
-      directionLabel: 'Oldest to newest',
-    },
-    {
-      label: 'Date',
-      value: 'invoiceDate desc',
-      directionLabel: 'Newest to oldest',
-    },
-    { label: 'Customer', value: 'customerName asc', directionLabel: 'A-Z' },
-    { label: 'Customer', value: 'customerName desc', directionLabel: 'Z-A' },
-    { label: 'Total', value: 'total asc', directionLabel: 'Lowest to highest' },
-    {
-      label: 'Total',
-      value: 'total desc',
-      directionLabel: 'Highest to lowest',
-    },
-    { label: 'Payment', value: 'paymentStatus asc', directionLabel: 'A-Z' },
-    { label: 'Payment', value: 'paymentStatus desc', directionLabel: 'Z-A' },
-    {
-      label: 'Fulfillment',
-      value: 'fulfillmentStatus asc',
-      directionLabel: 'A-Z',
-    },
-    {
-      label: 'Fulfillment',
-      value: 'fulfillmentStatus desc',
-      directionLabel: 'Z-A',
-    },
-    {
-      label: 'Status',
-      value: 'status asc',
-      directionLabel: 'A-Z',
-    },
-    {
-      label: 'Status',
-      value: 'status desc',
-      directionLabel: 'Z-A',
-    },
-  ];
   const resourceIDResolver = (order: any) => order.orderId;
 
   const {
@@ -880,183 +870,97 @@ function DashBoardPage() {
 
   // if total orders for shop is zero then show empty orders page
   if (totalInvoices < 1) return <NoOrdersPage />;
+
   return (
-    <div className={styles.container}>
-      <Page title='Dashboard'>
-        <Layout>
-          {errToast.visible && (
-            <Toast
-              onDismiss={() => {
-                setErrToast({
-                  visible: false,
-                  message: 'Something went wrong',
-                });
-              }}
-              error
-              content={errToast.message}
-              duration={2000}
-            />
-          )}
-          {successToastVisible && (
-            <Toast
-              onDismiss={() => {
-                setSuccessToastVisible(false);
-              }}
-              content='Mail sent successfully'
-              duration={2000}
-            />
-          )}
-          <Layout.Section fullWidth>
-            <div style={{ maxWidth: '100%', marginBottom: '2rem' }}>
-              <LegacyCard>
-                <IndexFilters
-                  loading={
-                    isFetching ||
-                    sendMergedPDFsToOwnerMutation.isLoading ||
-                    sendPDFsToCustomersMutation.isLoading ||
-                    sendPDFsToOwnerMutation.isLoading
-                  }
-                  sortOptions={sortOptions}
-                  sortSelected={[`${sort.column} ${sort.direction}`]}
-                  onSort={val => {
-                    const tempDirection = val[0].split(' ')[1];
-                    const tempColumn = val[0].split(' ')[0];
-                    setParams(prev => ({
-                      ...prev,
-                      direction: tempDirection,
-                      column: tempColumn,
-                      currentPage: 1,
-                    }));
-                    setSort({ direction: tempDirection, column: tempColumn });
-                  }}
-                  canCreateNewView={false}
-                  queryValue={queryValue}
-                  queryPlaceholder='Search by order number or customer name'
-                  onQueryChange={handleQueryValueChange}
-                  onQueryClear={() => {
-                    setQueryValue('');
-                    setParams(prev => ({
-                      ...prev,
-                      searchText: ''
-                        .trim()
-                        .replace(/[\\^$.*+?()[\]{}|]/g, '\\$&'),
-                    }));
-                  }}
-                  cancelAction={{
-                    onAction: onHandleCancel,
-                    disabled: false,
-                    loading: false,
-                  }}
-                  tabs={[]}
-                  selected={selected}
-                  onSelect={setSelected}
-                  filters={filters}
-                  appliedFilters={appliedFilters}
-                  onClearAll={handleFiltersClearAll}
-                  mode={mode}
-                  setMode={setMode}
-                />
-                <div className={styles.polarisIndexTableContainer}>
-                  <IndexTable
-                    // condensed={windowWidth.current < 460}
-                    bulkActions={bulkActions}
-                    promotedBulkActions={promotedBulkActions}
-                    emptyState={
-                      <EmptySearchResult
-                        title='No orders with the applied filters'
-                        description='Try changing the filters or search term'
-                        withIllustration
-                      />
-                    }
-                    sortDirection={sortDirection}
-                    sortColumnIndex={sortColumnIndex}
-                    onSort={val => {
-                      onSort(val);
-                    }}
-                    sortable={[
-                      true,
-                      true,
-                      true,
-                      true,
-                      true,
-                      true,
-                      true,
-                      true,
-                      false,
-                    ]}
-                    resourceName={resourceName}
-                    itemCount={orderData.length}
-                    selectedItemsCount={
-                      allResourcesSelected ? 'All' : selectedResources.length
-                    }
-                    onSelectionChange={handleSelectionChange}
-                    headings={[
-                      { title: 'Invoice' },
-                      { title: 'Order' },
-                      { title: 'Date' },
-                      { title: 'Name' },
-                      { title: 'Total', alignment: 'end' },
-                      { title: 'Payment' },
-                      { title: 'Fulfillment' },
-                      { title: 'Status' },
-                      { title: '' },
-                    ]}
-                  >
-                    {rowMarkup}
-                  </IndexTable>
-                </div>
-                <Divider />
-                <LegacyCard.Section>
-                  <LegacyStack distribution='center' alignment='center'>
-                    <Pagination
-                      hasPrevious={currentPage !== 1}
-                      previousKeys={[74]}
-                      previousTooltip='Previous (J)'
-                      onPrevious={() => {
-                        onPageChange(currentPage - 1);
-                      }}
-                      hasNext={hasNext}
-                      nextKeys={[75]}
-                      nextTooltip='Next (K)'
-                      onNext={() => {
-                        onPageChange(currentPage + 1);
-                      }}
-                    />
-                    <div className='dashboardPage__totalEntryInputContainer'>
-                      <Select
-                        value={String(totalEntryOnPage)}
-                        onChange={val => onTotalEntryOnPageChange(Number(val))}
-                        options={limitOptions}
-                        label={null}
-                      />
-                    </div>
-                  </LegacyStack>
-                </LegacyCard.Section>
-              </LegacyCard>
-            </div>
-            <Banner icon={HintMajor} status='info'>
-              Now you can view/download your invoices from your orders page
-              itself. Select particular orders (50 max) or open a particular
-              order and choose Invoice Hero features from More actions drop
-              down.
-            </Banner>
-          </Layout.Section>
-        </Layout>
-        <ContextualSaveBarActionResultModal
-          redirectContextualSaveBarActionResultModal={
-            redirectContextualSaveBarActionResultModal
-          }
-          closeContextualSaveBarActionResultModal={
-            closeContextualSaveBarActionResultModal
-          }
-          contextualSaveBarActionResultModalContent={
-            contextualSaveBarActionResultModalContent
-          }
-          open={isContextualSaveBarActionResultModalActive}
-          capitalizeFirstLetter={capitalizeFirstLetter}
-        />
-      </Page>
-    </div>
+    <HomeLayout
+      onPageChange={() => {
+        onPageChange(currentPage - 1);
+      }}
+      currentPage={currentPage}
+      hasNext={hasNext}
+      hasPreviousPage={currentPage !== 1}
+      onSelectChange={val => onTotalEntryOnPageChange(Number(val))}
+      totalEntryOnPage={totalEntryOnPage}
+      filterProps={{
+        sortOptions: sortOptions,
+        loading:
+          isFetching ||
+          sendMergedPDFsToOwnerMutation.isLoading ||
+          sendPDFsToCustomersMutation.isLoading ||
+          sendPDFsToOwnerMutation.isLoading,
+        sortSelected: [`${sort.column} ${sort.direction}`],
+        onSort: val => {
+          const tempDirection = val[0].split(' ')[1];
+          const tempColumn = val[0].split(' ')[0];
+          setParams(prev => ({
+            ...prev,
+            direction: tempDirection,
+            column: tempColumn,
+            currentPage: 1,
+          }));
+          setSort({ direction: tempDirection, column: tempColumn });
+        },
+        queryValue: queryValue,
+        onQueryChange: handleQueryValueChange,
+        onQueryClear: () => {
+          setQueryValue('');
+          setParams(prev => ({
+            ...prev,
+            searchText: ''.trim().replace(/[\\^$.*+?()[\]{}|]/g, '\\$&'),
+          }));
+        },
+        cancelAction: {
+          onAction: onHandleCancel,
+          disabled: false,
+          loading: false,
+        },
+        selected: selected,
+        onSelect: setSelected,
+        filters: filters,
+        appliedFilters: appliedFilters,
+        onClearAll: handleFiltersClearAll,
+        mode: mode,
+        setMode: setMode,
+      }}
+    >
+      <IndexTable
+        // condensed={windowWidth.current < 460}
+        bulkActions={bulkActions}
+        promotedBulkActions={promotedBulkActions}
+        emptyState={
+          <EmptySearchResult
+            title='No orders with the applied filters'
+            description='Try changing the filters or search term'
+            withIllustration
+          />
+        }
+        sortDirection={sortDirection}
+        sortColumnIndex={sortColumnIndex}
+        onSort={val => {
+          onSort(val);
+        }}
+        sortable={[true, true, true, true, true, true, true, true, false]}
+        resourceName={resourceName}
+        itemCount={orderData.length}
+        selectedItemsCount={
+          allResourcesSelected ? 'All' : selectedResources.length
+        }
+        onSelectionChange={handleSelectionChange}
+        headings={[
+          { title: 'Invoice' },
+          { title: 'Order' },
+          { title: 'Date' },
+          { title: 'Name' },
+          { title: 'Total', alignment: 'end' },
+          { title: 'Payment' },
+          { title: 'Fulfillment' },
+          { title: 'Status' },
+          { title: '' },
+        ]}
+      >
+        {rowMarkup}
+      </IndexTable>
+    </HomeLayout>
   );
 }
 
