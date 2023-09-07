@@ -29,7 +29,8 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     !req.url!.startsWith('/admin-links') &&
     !isSetupCompleted
   ) {
-    res.redirect(`/welcome?${searchParams.toString()}`);
+    res.redirect(`/?${searchParams.toString()}`);
+    // res.redirect(`/welcome?${searchParams.toString()}`);
     return;
   } else {
     res.redirect(`/?${searchParams.toString()}`);

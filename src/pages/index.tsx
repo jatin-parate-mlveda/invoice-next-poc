@@ -1,9 +1,12 @@
 import DashboardLoadingCom from "@/components/home/LoadingScreen";
 import { Provider as AppBridgeProvider } from "@shopify/app-bridge-react";
 import { Suspense } from "react";
-import DashBoardPage from "@/components/home/Index";
+// import DashBoardPage from "@/components/home/Index";
 import { AppProvider } from "@shopify/polaris";
 import AppQueryClientProvider from "@/contexts/react-query.context";
+import dynamic from "next/dynamic";
+
+const DashboardPageDynamic = dynamic(() => import('@/components/home/Index'));
 
 function DashboardPage() {
   if (typeof window === "undefined") {
@@ -25,7 +28,7 @@ function DashboardPage() {
       >
         <AppProvider i18n={{}}>
           <Suspense fallback={<DashboardLoadingCom />}>
-            <DashBoardPage />
+            <DashboardPageDynamic />
           </Suspense>
         </AppProvider>
       </AppBridgeProvider>
