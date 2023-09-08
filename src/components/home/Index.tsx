@@ -106,7 +106,9 @@ function DashBoardPage() {
   const [successToastVisible, setSuccessToastVisible] =
     useState<boolean>(false);
   // const [currentOrder, setCurrentOrder] = useState<number>(0);
-  const { totalInvoices } = useTotalOrdersQuery().data;
+  const { data: invoiceCountData, isFetching: invoiceCountDataFetching } = useTotalOrdersQuery({
+    suspense: false,
+  });
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [sort, setSort] = useState({
     column: 'invoiceDate',
@@ -869,7 +871,8 @@ function DashBoardPage() {
   }, [params.currentPage]);
 
   // if total orders for shop is zero then show empty orders page
-  if (totalInvoices < 1) return <NoOrdersPage />;
+  if (!invoiceCountDataFetching && invoiceCountData.totalInvoices < 1)
+    return <NoOrdersPage />;
 
   return (
     <HomeLayout
