@@ -1,3 +1,4 @@
+import { Provider as AppBridgeProvider } from '@shopify/app-bridge-react';
 import {
   IndexTable,
   useSetIndexFiltersMode,
@@ -979,4 +980,16 @@ function DashBoardPage() {
   );
 }
 
-export default DashBoardPage;
+export default function Wrapped() {
+  return (
+    <AppBridgeProvider
+      config={{
+        forceRedirect: true,
+        host: new URLSearchParams(window.location.search).get('host')!,
+        apiKey: process.env.NEXT_PUBLIC_SHOPIFY_API_KEY!,
+      }}
+    >
+      <DashBoardPage />
+    </AppBridgeProvider>
+  );
+}

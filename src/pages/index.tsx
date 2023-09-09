@@ -1,30 +1,22 @@
 import DashboardLoadingCom from '@/components/home/LoadingScreen';
-import { Provider as AppBridgeProvider } from '@shopify/app-bridge-react';
 import { Suspense } from 'react';
-// import DashBoardPage from "@/components/home/Index";
 import AppQueryClientProvider from '@/contexts/react-query.context';
 import dynamic from 'next/dynamic';
+import { AppProvider } from '@shopify/polaris';
+import enTranslations from '@shopify/polaris/locales/en.json';
 
-const DashboardPageDynamic = dynamic(() => import('@/components/home/Index'));
+const DashboardPageDynamic = dynamic(() => import('@/components/home/Index'), {
+  ssr: false,
+});
 
 function DashboardPage() {
-  if (typeof window === 'undefined') {
-    return <DashboardLoadingCom />;
-  }
-
   return (
     <AppQueryClientProvider>
-      <AppBridgeProvider
-        config={{
-          forceRedirect: true,
-          host: new URLSearchParams(window.location.search).get('host')!,
-          apiKey: process.env.NEXT_PUBLIC_SHOPIFY_API_KEY!,
-        }}
-      >
+      <AppProvider i18n={enTranslations}>
         <Suspense fallback={<DashboardLoadingCom />}>
           <DashboardPageDynamic />
         </Suspense>
-      </AppBridgeProvider>
+      </AppProvider>
     </AppQueryClientProvider>
   );
 }
