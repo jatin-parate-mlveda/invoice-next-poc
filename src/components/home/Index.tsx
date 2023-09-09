@@ -21,22 +21,20 @@ import {
 import {
   useInvoicesDataQuery,
   useInvoicesQueryTags,
-  useTotalOrdersQuery,
 } from '@/services/queries.service';
 import {
   useMergedPDFsToOwnerMutation,
   useSendPDFsToCustomersMutation,
   useSendPDFsToOwnerMutation,
-  useUpdateDashboardOpenedOnceUpdateMutation,
 } from '@/services/mutations.service';
 import ActionPopover from './ActionPopover';
 
-import NoOrdersPage from './NoOrdersPage';
 import DateRangePicker from './DatePicker';
 import styles from './Dashboard.module.scss';
 import ViewInvoiceButton from './ViewInvoiceButton';
 import { useRouter } from 'next/router';
 import HomeLayout from './HomeLayout';
+import { Toast } from '@shopify/app-bridge-react';
 
 const sortOptions: IndexFiltersProps['sortOptions'] = [
   { label: 'Invoice', value: 'orderNo asc', directionLabel: 'Ascending' },
@@ -106,9 +104,6 @@ function DashBoardPage() {
   const [successToastVisible, setSuccessToastVisible] =
     useState<boolean>(false);
   // const [currentOrder, setCurrentOrder] = useState<number>(0);
-  const { data: invoiceCountData, isFetching: invoiceCountDataFetching } = useTotalOrdersQuery({
-    suspense: false,
-  });
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [sort, setSort] = useState({
     column: 'invoiceDate',
@@ -133,7 +128,7 @@ function DashBoardPage() {
   const { data: invoicesData, isFetching } = useInvoicesDataQuery(params);
   const [hasNext, setHasNext] = useState(invoicesData.metadata[0].hasNext);
   const [orderData, setOrderData] = useState(invoicesData.orderData);
-  useUpdateDashboardOpenedOnceUpdateMutation();
+  // useUpdateDashboardOpenedOnceUpdateMutation();
   const [selected, setSelected] = useState(0);
   const [
     isContextualSaveBarActionResultModalActive,
@@ -870,100 +865,117 @@ function DashBoardPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.currentPage]);
 
-  // if total orders for shop is zero then show empty orders page
-  if (!invoiceCountDataFetching && invoiceCountData.totalInvoices < 1)
-    return <NoOrdersPage />;
-
   return (
-    <HomeLayout
-      onPageChange={() => {
-        onPageChange(currentPage - 1);
-      }}
-      currentPage={currentPage}
-      hasNext={hasNext}
-      hasPreviousPage={currentPage !== 1}
-      onSelectChange={val => onTotalEntryOnPageChange(Number(val))}
-      totalEntryOnPage={totalEntryOnPage}
-      filterProps={{
-        sortOptions: sortOptions,
-        loading:
-          isFetching ||
-          sendMergedPDFsToOwnerMutation.isLoading ||
-          sendPDFsToCustomersMutation.isLoading ||
-          sendPDFsToOwnerMutation.isLoading,
-        sortSelected: [`${sort.column} ${sort.direction}`],
-        onSort: val => {
-          const tempDirection = val[0].split(' ')[1];
-          const tempColumn = val[0].split(' ')[0];
-          setParams(prev => ({
-            ...prev,
-            direction: tempDirection,
-            column: tempColumn,
-            currentPage: 1,
-          }));
-          setSort({ direction: tempDirection, column: tempColumn });
-        },
-        queryValue: queryValue,
-        onQueryChange: handleQueryValueChange,
-        onQueryClear: () => {
-          setQueryValue('');
-          setParams(prev => ({
-            ...prev,
-            searchText: ''.trim().replace(/[\\^$.*+?()[\]{}|]/g, '\\$&'),
-          }));
-        },
-        cancelAction: {
-          onAction: onHandleCancel,
-          disabled: false,
-          loading: false,
-        },
-        selected: selected,
-        onSelect: setSelected,
-        filters: filters,
-        appliedFilters: appliedFilters,
-        onClearAll: handleFiltersClearAll,
-        mode: mode,
-        setMode: setMode,
-      }}
-    >
-      <IndexTable
-        // condensed={windowWidth.current < 460}
-        bulkActions={bulkActions}
-        promotedBulkActions={promotedBulkActions}
-        emptyState={
-          <EmptySearchResult
-            title='No orders with the applied filters'
-            description='Try changing the filters or search term'
-            withIllustration
-          />
-        }
-        sortDirection={sortDirection}
-        sortColumnIndex={sortColumnIndex}
-        onSort={val => {
-          onSort(val);
+    <>
+      {errToast.visible && (
+        <Toast
+          onDismiss={() => {
+            setErrToast({ visible: false, message: 'Something went wrong' });
+          }}
+          error
+          content={errToast.message}
+          duration={2000}
+        />
+      )}
+      {successToastVisible && (
+        <Toast
+          onDismiss={() => {
+            setSuccessToastVisible(false);
+          }}
+          content='Mail sent successfully'
+          duration={2000}
+        />
+      )}
+      <HomeLayout
+        onPageChange={() => {
+          onPageChange(currentPage - 1);
         }}
-        sortable={[true, true, true, true, true, true, true, true, false]}
-        resourceName={resourceName}
-        itemCount={orderData.length}
-        selectedItemsCount={
-          allResourcesSelected ? 'All' : selectedResources.length
-        }
-        onSelectionChange={handleSelectionChange}
-        headings={[
-          { title: 'Invoice' },
-          { title: 'Order' },
-          { title: 'Date' },
-          { title: 'Name' },
-          { title: 'Total', alignment: 'end' },
-          { title: 'Payment' },
-          { title: 'Fulfillment' },
-          { title: 'Status' },
-          { title: '' },
-        ]}
+        currentPage={currentPage}
+        hasNext={hasNext}
+        hasPreviousPage={currentPage !== 1}
+        onSelectChange={val => onTotalEntryOnPageChange(Number(val))}
+        totalEntryOnPage={totalEntryOnPage}
+        filterProps={{
+          sortOptions: sortOptions,
+          loading:
+            isFetching ||
+            sendMergedPDFsToOwnerMutation.isLoading ||
+            sendPDFsToCustomersMutation.isLoading ||
+            sendPDFsToOwnerMutation.isLoading,
+          sortSelected: [`${sort.column} ${sort.direction}`],
+          onSort: val => {
+            const tempDirection = val[0].split(' ')[1];
+            const tempColumn = val[0].split(' ')[0];
+            setParams(prev => ({
+              ...prev,
+              direction: tempDirection,
+              column: tempColumn,
+              currentPage: 1,
+            }));
+            setSort({ direction: tempDirection, column: tempColumn });
+          },
+          queryValue: queryValue,
+          onQueryChange: handleQueryValueChange,
+          onQueryClear: () => {
+            setQueryValue('');
+            setParams(prev => ({
+              ...prev,
+              searchText: ''.trim().replace(/[\\^$.*+?()[\]{}|]/g, '\\$&'),
+            }));
+          },
+          cancelAction: {
+            onAction: onHandleCancel,
+            disabled: false,
+            loading: false,
+          },
+          selected: selected,
+          onSelect: setSelected,
+          filters: filters,
+          appliedFilters: appliedFilters,
+          onClearAll: handleFiltersClearAll,
+          mode: mode,
+          setMode: setMode,
+        }}
       >
-        {rowMarkup}
-      </IndexTable>
-    </HomeLayout>
+        <IndexTable
+          // condensed={windowWidth.current < 460}
+          bulkActions={bulkActions}
+          promotedBulkActions={promotedBulkActions}
+          emptyState={
+            <EmptySearchResult
+              title='No orders with the applied filters'
+              description='Try changing the filters or search term'
+              withIllustration
+            />
+          }
+          sortDirection={sortDirection}
+          sortColumnIndex={sortColumnIndex}
+          onSort={val => {
+            onSort(val);
+          }}
+          sortable={[true, true, true, true, true, true, true, true, false]}
+          resourceName={resourceName}
+          itemCount={orderData.length}
+          selectedItemsCount={
+            allResourcesSelected ? 'All' : selectedResources.length
+          }
+          onSelectionChange={handleSelectionChange}
+          headings={[
+            { title: 'Invoice' },
+            { title: 'Order' },
+            { title: 'Date' },
+            { title: 'Name' },
+            { title: 'Total', alignment: 'end' },
+            { title: 'Payment' },
+            { title: 'Fulfillment' },
+            { title: 'Status' },
+            { title: '' },
+          ]}
+        >
+          {rowMarkup}
+        </IndexTable>
+      </HomeLayout>
+    </>
   );
 }
 
