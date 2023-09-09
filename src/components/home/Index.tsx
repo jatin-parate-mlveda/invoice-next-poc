@@ -1,4 +1,3 @@
-import { Provider as AppBridgeProvider } from '@shopify/app-bridge-react';
 import {
   IndexTable,
   useSetIndexFiltersMode,
@@ -11,7 +10,7 @@ import {
 import type { IndexFiltersProps } from '@shopify/polaris';
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import moment from 'moment';
+import formatDate from 'date-fns/format';
 import { useDebounce } from 'usehooks-ts';
 import {
   fulfillmentFilters,
@@ -29,7 +28,6 @@ import {
   useSendPDFsToOwnerMutation,
 } from '@/services/mutations.service';
 import ActionPopover from './ActionPopover';
-
 import DateRangePicker from './DatePicker';
 import styles from './Dashboard.module.scss';
 import ViewInvoiceButton from './ViewInvoiceButton';
@@ -100,7 +98,7 @@ function DashBoardPage() {
     visible: false,
     message: 'Something went wrong',
   });
-  const dateFilterFormat = 'D MMM YYYY';
+  const dateFilterFormat = 'd MMM yyyy';
   // const windowWidth = useRef(window.innerWidth);
   const [successToastVisible, setSuccessToastVisible] =
     useState<boolean>(false);
@@ -641,13 +639,14 @@ function DashBoardPage() {
   const disambiguateLabelForDateRange = (start: any, end: any) => {
     let label = 'Order date: ';
     if (start && end) {
-      label += `${moment(start).format(dateFilterFormat)} - ${moment(
-        end,
-      ).format(dateFilterFormat)}`;
+      label += `${formatDate(new Date(start), dateFilterFormat)} - ${formatDate(
+        new Date(end),
+        dateFilterFormat,
+      )}`;
     } else if (start) {
-      label += `Starting ${moment(start).format(dateFilterFormat)}`;
+      label += `Starting ${formatDate(new Date(start), dateFilterFormat)}`;
     } else if (end) {
-      label += `Ending ${moment(end).format(dateFilterFormat)}`;
+      label += `Ending ${formatDate(new Date(end), dateFilterFormat)}`;
     }
     return label;
   };
@@ -980,16 +979,4 @@ function DashBoardPage() {
   );
 }
 
-export default function Wrapped() {
-  return (
-    <AppBridgeProvider
-      config={{
-        forceRedirect: true,
-        host: new URLSearchParams(window.location.search).get('host')!,
-        apiKey: process.env.NEXT_PUBLIC_SHOPIFY_API_KEY!,
-      }}
-    >
-      <DashBoardPage />
-    </AppBridgeProvider>
-  );
-}
+export default DashBoardPage;
