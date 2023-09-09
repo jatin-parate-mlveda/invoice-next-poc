@@ -7,6 +7,7 @@ import enTranslations from '@shopify/polaris/locales/en.json';
 
 const DashboardPageDynamic = dynamic(() => import('@/components/home/Index'), {
   ssr: false,
+  loading: () => <DashboardLoadingCom />
 });
 
 function DashboardPage() {
