@@ -27,7 +27,7 @@ export default function HomeLayout({
   onPageChange,
   currentPage = 1,
   totalEntryOnPage = 25,
-  onSelectChange,
+  onSelectChange = () => {},
 }: PropsWithChildren<{
   onSelectChange?: SelectProps['onChange'];
   totalEntryOnPage?: number;
