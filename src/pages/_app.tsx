@@ -1,6 +1,7 @@
 import { AppBridgeProvider } from '@/components/AppBridgeProvider';
 import AppQueryClientProvider from '@/contexts/react-query.context';
 import '@/styles/globals.css';
+import "@shopify/polaris/build/esm/styles.css";
 import { AppProvider } from '@shopify/polaris';
 import enTranslations from '@shopify/polaris/locales/en.json';
 import { NavigationMenu } from '@shopify/app-bridge-react';

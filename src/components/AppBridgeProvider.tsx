@@ -37,7 +37,7 @@ export function AppBridgeProvider({ children }: { children: ReactNode }) {
     return {
       host,
       apiKey: process.env.NEXT_PUBLIC_SHOPIFY_API_KEY || '',
-      forceRedirect: true,
+      forceRedirect: false,
     };
   });
 
