@@ -7,8 +7,6 @@ import {
   Banner,
 } from '@shopify/polaris';
 import { useNavigate } from '@shopify/app-bridge-react';
-import { useEffect, useRef } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 import { useAnalyticsQuery } from '@/services/queries.service';
 import { GetServerSideProps } from 'next';
 import { AnalyticsRes } from '@/services/api.service';
@@ -35,17 +33,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
 export default function AnalyticsPage({ body }: Props) {
   const { data, isLoading } = useAnalyticsQuery(body);
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const firstTimeLoadedRef = useRef(false);
-
-  useEffect(() => {
-    if (!firstTimeLoadedRef.current) {
-      firstTimeLoadedRef.current = true;
-      return;
-    }
-
-    queryClient.refetchQueries(['analytics']);
-  }, [queryClient]);
 
   return (
     <Page
