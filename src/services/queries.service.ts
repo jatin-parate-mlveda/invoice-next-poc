@@ -14,6 +14,8 @@ import {
   fetchTemplateData,
   fetchInvoices,
   fetchTotalOrders,
+  fetchAnalytics,
+  AnalyticsRes,
 } from './api.service';
 
 export const useSettingsQueryTags = ['settings'];
@@ -153,4 +155,12 @@ export const useInvoicesDataQuery = (
       ...options,
     },
   );
+};
+
+export const useAnalyticsQuery = (initialData: AnalyticsRes) => {
+  const appInstance = useAppBridge();
+  return useQuery(['analytics'], () => fetchAnalytics(appInstance), {
+    suspense: false,
+    initialData: initialData,
+  });
 };

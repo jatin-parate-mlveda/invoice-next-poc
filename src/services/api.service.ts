@@ -877,3 +877,21 @@ export const sendPDFsToOwnerApiCall = async (
   });
   return res.data;
 };
+
+export type AnalyticsRes = {
+  totalOrdersLastMonth: number;
+  totalInvoicesSentLastMonth: number;
+  totalInvoicesSentThisMonth: number;
+};
+
+export const fetchAnalytics = async (
+  appInstance: ClientApplication<AppBridgeState>,
+) => {
+  const jwt = await getSessionToken(appInstance);
+  const res = await axiosInstance.get<AnalyticsRes>('/api/order/analytics', {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+  return res.data;
+};
